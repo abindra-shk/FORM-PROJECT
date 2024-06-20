@@ -51,19 +51,26 @@ const Form = () => {
   ]);
 
   return (
-    <>
-     <Box className="form">
-        <Box className="row" >
-          <Typography className="row-item" variant="h6">ID</Typography>
-          <Typography className="row-item" variant="h6">First Name</Typography>
-          <Typography className="row-item" variant="h6">Last Name</Typography>
-          <Typography className="row-item" variant="h6">Address</Typography>
-        </Box>
-        {formArray.map((item: FormItem) => (
-          <FormRow key={item.id} item={item} />
-        ))}
+    <Box className="form">
+      <Box className="row">
+        <Typography className="row-item" variant="h6">
+          ID
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          First Name
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Last Name
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Address
+        </Typography>
       </Box>
-    </>
+      {formArray.map((record: FormItem) => (
+        <FormRow key={record.id} record={record} />
+      ))}
+    </Box>
   );
 };
+
 export default Form;

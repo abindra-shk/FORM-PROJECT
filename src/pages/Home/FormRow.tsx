@@ -1,39 +1,15 @@
-import { Box, TextField } from '@mui/material';
+import { Box } from '@mui/material';
 import { FormItem } from '../../interface/interface';
+import EditableField from './EditableField';
 
-const FormRow = ({ item }: { item: FormItem }) => {
+const FormRow = ({ record }: { record: FormItem }) => {
   return (
-    <Box className="row" sx={{ display: 'flex', alignItems: 'center' }}>
-    <TextField
-      className='row-item'
-      variant="outlined"
-      size="small"
-      value={item.id}
-      disabled
-      sx={{color:'white'}}
-    />
-    <TextField
-      className='row-item'
-      variant="outlined"
-      size="small"
-      value={item.firstname}
-      disabled
-    />
-    <TextField
-      className='row-item'
-      variant="outlined"
-      size="small"
-      value={item.lastname}
-      disabled
-    />
-    <TextField
-      className='row-item'
-      variant="outlined"
-      size="small"
-      value={item.address}
-      disabled
-    />
-  </Box>
+    <Box className="row">
+      <EditableField recordItem={record.id.toString()} isDisabled={true} />
+      <EditableField recordItem={record.firstname} />
+      <EditableField recordItem={record.lastname} />
+      <EditableField recordItem={record.address} />
+    </Box>
   );
 };
 

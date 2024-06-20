@@ -14,17 +14,11 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: [
-      'Roboto',
-      'Helvetica Neue',
-      'Arial',
-      'sans-serif',
-    ].join(','),
+    fontFamily: ['Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'].join(','),
     h6: {
       fontSize: '1rem',
       fontWeight: 700,
       textTransform: 'uppercase',
-      marginBottom: '1rem',
       color: 'white',
     },
   },
@@ -32,13 +26,13 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-         
+          width:'200px',
           '& .MuiInputBase-input': {
             color: 'white', // text color
           },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: '#556cd6',// border color
+              borderColor: '#556cd6', // border color
             },
             '&:hover fieldset': {
               borderColor: '#19857b', // border color on hover
