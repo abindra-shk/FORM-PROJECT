@@ -37,6 +37,7 @@ const EditableField = ({
           value={value}
           fullWidth
           onBlur={onBlur}
+          autoFocus
           onChange={handleChange}
         />
       )}
