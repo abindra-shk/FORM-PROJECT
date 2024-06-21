@@ -36,7 +36,7 @@ const EditableField = ({
 
   return (
     <div className="input-label">
-      {editable ? (
+      {editable || !value || value == '' ? (
         <TextField
           className="row-item"
           variant="outlined"

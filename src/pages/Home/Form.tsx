@@ -2,7 +2,8 @@ import { useState } from 'react';
 import './Form.style.css';
 import FormRow from './FormRow';
 import { FormItem } from '../../interface/interface';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 const Form = () => {
   const [formArray, setFormArray] = useState<FormItem[]>([
@@ -98,7 +99,24 @@ const Form = () => {
   };
 
   const handleDelete = (id: number) => {
-    setFormArray((prevFormArray) => prevFormArray.filter((item) => item.id !== id));
+    setFormArray((prevFormArray) =>
+      prevFormArray.filter((item) => item.id !== id)
+    );
+  };
+
+  const handleAdd = () => {
+    const newId = formArray.length ? formArray[formArray.length - 1].id + 1 : 1;
+    const newItem: FormItem = {
+      id: newId,
+      firstname: '',
+      lastname: '',
+      email: '',
+      address: '',
+      ratePerHour: 100,
+      hours: 0,
+      total: 0,
+    };
+    setFormArray([...formArray, newItem]);
   };
 
   return (
@@ -134,9 +152,16 @@ const Form = () => {
           key={record.id}
           record={record}
           onFieldChange={handleFieldChange}
-          onDelete={handleDelete}git 
+          onDelete={handleDelete}
         />
       ))}
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleAdd}
+      >
+        <AddIcon />
+      </Button>
     </Box>
   );
 };

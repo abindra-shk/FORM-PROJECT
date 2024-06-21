@@ -18,3 +18,8 @@
   width: 100%;
   padding: 8.5px 14px;
 }
+
+.add-button{
+  width: 50px;
+  border-radius: 50px;
+}

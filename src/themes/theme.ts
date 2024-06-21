@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import { red, grey } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
@@ -7,7 +7,7 @@ const theme = createTheme({
       main: '#556cd6',
     },
     secondary: {
-      main: '#19857b',
+      main: grey[500],
     },
     error: {
       main: red.A400,
@@ -26,7 +26,7 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          width:'150px',
+          width: '150px',
           '& .MuiInputBase-input': {
             color: 'white', // text color
           },
@@ -48,6 +48,25 @@ const theme = createTheme({
           '& .MuiInputBase-input.Mui-disabled': {
             opacity: 1,
             '-webkit-text-fill-color': 'white', // customize the text color for disabled state
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root:{width: '40px'},
+        containedSecondary: {
+          borderRadius:'50%',
+          minWidth: '40px', 
+          height: '40px', 
+          padding: '10px',
+          marginTop:'5px', 
+          backgroundColor: grey[500], 
+          '&.MuiButton-containedSecondary': {
+            color: 'white', 
+            '&:hover': {
+              backgroundColor: grey[700], 
+            },
           },
         },
       },
