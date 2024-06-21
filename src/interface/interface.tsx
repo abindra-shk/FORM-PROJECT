@@ -4,4 +4,7 @@ export interface FormItem {
   lastname: string;
   email: string;
   address: string;
+  ratePerHour: number;
+  hours: number;
+  total: number;
 }

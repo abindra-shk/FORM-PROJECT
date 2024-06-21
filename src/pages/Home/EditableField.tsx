@@ -5,12 +5,17 @@ const EditableField = ({
   recordItem,
   isDisabled = false,
   onFieldChange,
+  id,
+  name,
 }: {
   recordItem: string;
   isDisabled?: boolean;
-  onFieldChange?: (value: string) => void;
+  onFieldChange?: (id: number, name: string, value: string) => void;
+  id: number;
+  name: string;
 }) => {
   const [editable, setEditable] = useState(false);
+  const [value, setValue] = useState(recordItem);
 
   const onFieldClick = () => {
     if (!isDisabled) {
@@ -20,30 +25,31 @@ const EditableField = ({
 
   const onBlur = () => {
     setEditable(false);
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onFieldChange) {
-      onFieldChange(event.target.value);
+      onFieldChange(id, name, value);
     }
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+
   return (
-    <div className='input-label'>
+    <div className="input-label">
       {editable ? (
         <TextField
           className="row-item"
           variant="outlined"
           size="small"
-          value={recordItem}
+          value={value}
           fullWidth
           onBlur={onBlur}
           autoFocus
           onChange={handleChange}
         />
       ) : (
-        <Typography className='row-item' onClick={onFieldClick}>
-          {recordItem}
+        <Typography className="row-item" onClick={onFieldClick}>
+          {value}
         </Typography>
       )}
     </div>

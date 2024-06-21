@@ -12,6 +12,9 @@ const Form = () => {
       lastname: 'Valley',
       email: 'rome@gmail.com',
       address: 'Texas',
+      ratePerHour: 100,
+      hours: 0,
+      total: 0,
     },
     {
       id: 2,
@@ -19,6 +22,9 @@ const Form = () => {
       lastname: 'Vallerie',
       email: 'romey@gmail.com',
       address: 'Atlanta',
+      ratePerHour: 100,
+      hours: 0,
+      total: 0,
     },
     {
       id: 3,
@@ -26,6 +32,9 @@ const Form = () => {
       lastname: 'Doe',
       email: 'john.doe@example.com',
       address: 'New York',
+      ratePerHour: 100,
+      hours: 0,
+      total: 0,
     },
     {
       id: 4,
@@ -33,6 +42,9 @@ const Form = () => {
       lastname: 'Smith',
       email: 'jane.smith@example.com',
       address: 'California',
+      ratePerHour: 100,
+      hours: 0,
+      total: 0,
     },
     {
       id: 5,
@@ -40,6 +52,9 @@ const Form = () => {
       lastname: 'Johnson',
       email: 'alice.johnson@example.com',
       address: 'Florida',
+      ratePerHour: 100,
+      hours: 0,
+      total: 0,
     },
     {
       id: 6,
@@ -47,15 +62,43 @@ const Form = () => {
       lastname: 'Brown',
       email: 'bob.brown@example.com',
       address: 'Nevada',
+      ratePerHour: 100,
+      hours: 0,
+      total: 0,
     },
   ]);
-
-  const handleFieldChange = (id: number, field: keyof FormItem, value: string) => {
+  // eslint-disable-next-line
+  const handleFieldChange = (id: number, name: String, value: any) => {
+    console.log('id', id, 'field', name, 'value', value);
     setFormArray((prevFormArray) =>
-      prevFormArray.map((item) =>
-        item.id === id ? { ...item, [field]: value } : item
-      )
+      prevFormArray.map((item) => {
+        if (item.id != id) return item;
+        const obj = { ...item };
+        switch (name) {
+          case 'firstname':
+            return { ...obj, firstname: value };
+            break;
+          case 'lastname':
+            return { ...obj, lastname: value };
+            break;
+          case 'address':
+            return { ...obj, address: value };
+            break;
+          case 'ratePerHour':
+            return { ...obj, ratePerHour: value, total: obj.hours * value };
+            break;
+          case 'hours':
+            return { ...obj, hours: value, total: obj.ratePerHour * value };
+            break;
+        }
+
+        return obj;
+      })
     );
+  };
+
+  const handleDelete = (id: number) => {
+    setFormArray((prevFormArray) => prevFormArray.filter((item) => item.id !== id));
   };
 
   return (
@@ -73,9 +116,26 @@ const Form = () => {
         <Typography className="row-item" variant="h6">
           Address
         </Typography>
+        <Typography className="row-item" variant="h6">
+          Rate Per Hour
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Hours
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Total
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Actions
+        </Typography>
       </Box>
       {formArray.map((record: FormItem) => (
-        <FormRow key={record.id} record={record} onFieldChange={handleFieldChange} />
+        <FormRow
+          key={record.id}
+          record={record}
+          onFieldChange={handleFieldChange}
+          onDelete={handleDelete}git 
+        />
       ))}
     </Box>
   );

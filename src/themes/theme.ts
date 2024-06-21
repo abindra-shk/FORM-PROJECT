@@ -26,7 +26,7 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          width:'200px',
+          width:'150px',
           '& .MuiInputBase-input': {
             color: 'white', // text color
           },
