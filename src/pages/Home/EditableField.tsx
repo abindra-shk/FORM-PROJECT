@@ -3,43 +3,48 @@ import { useState } from 'react';
 
 const EditableField = ({
   recordItem,
-  isDisabled = true,
+  isDisabled = false,
+  onFieldChange,
 }: {
   recordItem: string;
   isDisabled?: boolean;
+  onFieldChange?: (value: string) => void;
 }) => {
-  const [editable, setEditable] = useState(isDisabled);
-  const [value, setValue] = useState(recordItem);
+  const [editable, setEditable] = useState(false);
 
   const onFieldClick = () => {
-    setEditable(false);
+    if (!isDisabled) {
+      setEditable(true);
+    }
   };
 
   const onBlur = () => {
-    setEditable(true);
+    setEditable(false);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    if (onFieldChange) {
+      onFieldChange(event.target.value);
+    }
   };
 
   return (
     <div className='input-label'>
       {editable ? (
-        <Typography className='row-item' onClick={onFieldClick}>
-          {value}
-        </Typography>
-      ) : (
         <TextField
           className="row-item"
           variant="outlined"
           size="small"
-          value={value}
+          value={recordItem}
           fullWidth
           onBlur={onBlur}
           autoFocus
           onChange={handleChange}
         />
+      ) : (
+        <Typography className='row-item' onClick={onFieldClick}>
+          {recordItem}
+        </Typography>
       )}
     </div>
   );

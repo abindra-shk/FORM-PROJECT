@@ -50,6 +50,14 @@ const Form = () => {
     },
   ]);
 
+  const handleFieldChange = (id: number, field: keyof FormItem, value: string) => {
+    setFormArray((prevFormArray) =>
+      prevFormArray.map((item) =>
+        item.id === id ? { ...item, [field]: value } : item
+      )
+    );
+  };
+
   return (
     <Box className="form">
       <Box className="row">
@@ -67,7 +75,7 @@ const Form = () => {
         </Typography>
       </Box>
       {formArray.map((record: FormItem) => (
-        <FormRow key={record.id} record={record} />
+        <FormRow key={record.id} record={record} onFieldChange={handleFieldChange} />
       ))}
     </Box>
   );
