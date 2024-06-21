@@ -1,0 +1,23 @@
+
+
+.tableContainer {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .table {
+    min-width: 650px;
+  }
+  
+  .tableCell {
+    padding: 10px;
+  }
+  
+  .textField {
+    width: 100%;
+  }
+  
+  .iconButton {
+    margin: 0 5px;
+  }
+  
