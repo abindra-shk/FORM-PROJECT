@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { TableRow } from '@mui/material';
-import Items from './Items';
+import React, { useState } from 'react';
 import styles from './Home.module.css';
+import Items from './Items';
 
 interface DataRow {
   id: number;
@@ -16,50 +15,52 @@ interface RowProps {
 }
 
 const Row: React.FC<RowProps> = ({ row, updateRow }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const [editingField, setEditingField] = useState<string | null>(null);
   const [rowData, setRowData] = useState(row);
-  const rowRef = useRef<HTMLTableRowElement>(null);
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (rowRef.current && !rowRef.current.contains(event.target as Node)) {
-      saveChanges();
-    }
-  };
-
-  useEffect(() => {
-    if (isEditing) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isEditing]);
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const saveChanges = () => {
-    updateRow(rowData);
-    setIsEditing(false);
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setRowData({ ...rowData, [name]: name === 'age' ? +value : value });
+    setRowData({ ...rowData, [name]: name === 'age' || name === 'id' ? +value : value });
+  };
+
+  const handleEdit = () => {
+    if (editingField) {
+      updateRow(rowData);
+      setEditingField(null);
+    }
   };
 
   return (
-    <TableRow ref={rowRef} className={styles.row}>
+    <div className={styles.tableRow} onBlur={handleEdit}>
       <Items
-        rowData={rowData}
-        isEditing={isEditing}
+        name="id"
+        value={rowData.id}
+        isEditing={editingField === 'id'}
         handleChange={handleChange}
-        handleEdit={handleEdit}
+        setEditingField={setEditingField}
       />
-    </TableRow>
+      <Items
+        name="name"
+        value={rowData.name}
+        isEditing={editingField === 'name'}
+        handleChange={handleChange}
+        setEditingField={setEditingField}
+      />
+      <Items
+        name="age"
+        value={rowData.age}
+        isEditing={editingField === 'age'}
+        handleChange={handleChange}
+        setEditingField={setEditingField}
+      />
+      <Items
+        name="email"
+        value={rowData.email}
+        isEditing={editingField === 'email'}
+        handleChange={handleChange}
+        setEditingField={setEditingField}
+      />
+    </div>
   );
 };
 

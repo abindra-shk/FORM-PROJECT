@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableContainer, Paper, TableHead, TableRow, TableCell, IconButton } from '@mui/material';
 import Row from './Row';
 import styles from './Home.module.css';
 
@@ -39,33 +38,31 @@ const Home: React.FC = () => {
   const updateRow = (updatedRow: DataRow) => {
     const newData = data.map(item => item.id === updatedRow.id ? updatedRow : item);
     setData(newData);
-    localStorage.setItem('tableData', JSON.stringify(newData));
   };
 
   return (
-    <TableContainer component={Paper} className={styles.tableContainer}>
-      <Table className={styles.table}>
-        <TableHead className={styles.tableHead}>
-          <TableRow>
-            <TableCell className={styles.tableHeaderCell}>Name</TableCell>
-            <TableCell className={styles.tableHeaderCell}>Age</TableCell>
-            <TableCell className={styles.tableHeaderCell}>Email</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
+    <div className={styles.tableContainer}>
+      <div className={styles.table}>
+        <div className={styles.tableHead}>
+          <div className={styles.tableRow}>
+            <div className={styles.tableHeaderCell}>ID</div>
+            <div className={styles.tableHeaderCell}>Name</div>
+            <div className={styles.tableHeaderCell}>Age</div>
+            <div className={styles.tableHeaderCell}>Email</div>
+          </div>
+        </div>
+        <div className={styles.tableBody}>
           {data.map((row) => (
             <Row key={row.id} row={row} updateRow={updateRow} />
           ))}
-          <TableRow>
-            <TableCell colSpan={3} align="center">
-              <IconButton onClick={addRow} className={styles.iconButton}>
-                +
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+          <div className={styles.tableRow}>
+            <div className={styles.tableCell} style={{ textAlign: 'center' }}>
+              <button onClick={addRow} className={styles.addButton}>+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
