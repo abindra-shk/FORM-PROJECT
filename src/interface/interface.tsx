@@ -1,7 +1,8 @@
 export interface FormItem {
-  id: number;
-  firstname: string;
-  lastname: string;
+  index?: number;
+  _id: string;
+  firstName: string;
+  lastName: string;
   email: string;
   address: string;
   ratePerHour: number;

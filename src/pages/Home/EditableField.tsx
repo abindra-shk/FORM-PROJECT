@@ -1,5 +1,5 @@
 import { TextField, Typography, Snackbar, Alert } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const EditableField = ({
   recordItem,
@@ -10,14 +10,18 @@ const EditableField = ({
 }: {
   recordItem: string;
   isDisabled?: boolean;
-  onFieldChange?: (id: number, name: string, value: string) => void;
-  id: number;
+  onFieldChange?: (id: string, name: string, value: string) => void;
+  id: string;
   name: string;
 }) => {
   const [editable, setEditable] = useState(false);
   const [value, setValue] = useState(recordItem);
   const [error, setError] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  useEffect(() => {
+    setValue(recordItem);
+  }, [recordItem]);
 
   const onFieldClick = () => {
     if (!isDisabled) {
@@ -27,13 +31,17 @@ const EditableField = ({
 
   const onBlur = () => {
     setEditable(false);
-    if (onFieldChange) {
+    if (onFieldChange && value !== recordItem) {
+      console.log('id inside onblur', id);
       onFieldChange(id, name, value);
     }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
+    console.log('new Value', newValue);
+    console.log('ediatable', editable);
+    setEditable(true);
     if (name === 'ratePerHour' || name === 'hours') {
       if (!/^\d*$/.test(newValue)) {
         setError(true);
@@ -43,6 +51,7 @@ const EditableField = ({
         setSnackbarOpen(false);
       }
     }
+    console.log('handle change value', newValue);
     setValue(newValue);
   };
 
@@ -52,7 +61,7 @@ const EditableField = ({
 
   return (
     <div className="input-label">
-      {editable || !value || value === '' ? (
+      {editable || !value || value == '' ? (
         <TextField
           className="row-item"
           variant="outlined"
@@ -63,7 +72,6 @@ const EditableField = ({
           autoFocus
           onChange={handleChange}
           error={error}
-          
           InputProps={{
             style: { borderColor: error ? 'red' : '' },
           }}

@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { red, grey } from '@mui/material/colors';
+import { darken } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
@@ -37,6 +38,17 @@ const theme = createTheme({
           '& .MuiInputBase-input.Mui-disabled': {
             opacity: 1,
             '-webkit-text-fill-color': 'white', // customize the text color for disabled state
+          },
+          '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'dimgrey',
+            borderWidth: '2px', // Custom focus border color and width
+          },
+          '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#556cd6',
+            borderWidth: '2px', // Custom focus border color and width
+          },
+          '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: darken('#556cd6', 0.2), // Darken the primary color by 20% on hover
           },
         },
       },

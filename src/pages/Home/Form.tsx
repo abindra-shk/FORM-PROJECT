@@ -1,123 +1,126 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Form.style.css';
 import FormRow from './FormRow';
 import { FormItem } from '../../interface/interface';
-import { Box, Button, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import {
+  Box,
+  Button,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import axios from 'axios';
 
 const Form = () => {
-  const [formArray, setFormArray] = useState<FormItem[]>([
-    {
-      id: 1,
-      firstname: 'Rome',
-      lastname: 'Valley',
-      email: 'rome@gmail.com',
-      address: 'Texas',
-      ratePerHour: 100,
-      hours: 0,
-      total: 0,
-    },
-    {
-      id: 2,
-      firstname: 'Romey',
-      lastname: 'Vallerie',
-      email: 'romey@gmail.com',
-      address: 'Atlanta',
-      ratePerHour: 100,
-      hours: 0,
-      total: 0,
-    },
-    {
-      id: 3,
-      firstname: 'John',
-      lastname: 'Doe',
-      email: 'john.doe@example.com',
-      address: 'New York',
-      ratePerHour: 100,
-      hours: 0,
-      total: 0,
-    },
-    {
-      id: 4,
-      firstname: 'Jane',
-      lastname: 'Smith',
-      email: 'jane.smith@example.com',
-      address: 'California',
-      ratePerHour: 100,
-      hours: 0,
-      total: 0,
-    },
-    {
-      id: 5,
-      firstname: 'Alice',
-      lastname: 'Johnson',
-      email: 'alice.johnson@example.com',
-      address: 'Florida',
-      ratePerHour: 100,
-      hours: 0,
-      total: 0,
-    },
-    {
-      id: 6,
-      firstname: 'Bob',
-      lastname: 'Brown',
-      email: 'bob.brown@example.com',
-      address: 'Nevada',
-      ratePerHour: 100,
-      hours: 0,
-      total: 0,
-    },
-  ]);
+  const [formArray, setFormArray] = useState<FormItem[]>([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [recordToDelete, setRecordToDelete] = useState<number | null>(null);
+  const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
 
-    // eslint-disable-next-line
-  const handleFieldChange = (id: number, name: string, value: any) => {
+  const displayAllUsers = async (): Promise<void> => {
+    try {
+      const res = await axios.get('http://localhost:8000/api/test');
+      console.log('data', res);
+      setFormArray(res.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    displayAllUsers();
+  }, []);
+
+  // eslint-disable-next-line
+  const handleFieldChange = (id: string, name: string, value: any) => {
     setFormArray((prevFormArray) =>
       prevFormArray.map((item) => {
-        if (item.id !== id) return item;
+        if (item._id !== id) return item;
         const obj = { ...item };
+  
         switch (name) {
-          case 'firstname':
-            return { ...obj, firstname: value };
-          case 'lastname':
-            return { ...obj, lastname: value };
+          case 'firstName':
+            obj.firstName = value;
+            updateData(id, { firstName: value });
+            break;
+          case 'lastName':
+            obj.lastName = value;
+            updateData(id, { lastName: value });
+            break;
           case 'address':
-            return { ...obj, address: value };
+            obj.address = value;
+            updateData(id, { address: value });
+            break;
           case 'ratePerHour':
-            return { ...obj, ratePerHour: value, total: obj.hours * value };
+            obj.ratePerHour = value;
+            obj.total = obj.hours * value;
+            updateData(id, { ratePerHour: value });
+            updateData(id, { total: obj.total });
+            break;
           case 'hours':
-            return { ...obj, hours: value, total: obj.ratePerHour * value };
+            obj.hours = value;
+            obj.total = obj.ratePerHour * value;
+            updateData(id, { hours: value });
+            updateData(id, { total: obj.total });
+            break;
           default:
-            return obj;
+            break;
         }
+  
+        return obj;
       })
     );
   };
+  
+  // eslint-disable-next-line
+  const updateData = async (id: string, value: any) => {
+    console.log('update data fun********value***********', value);
+    if (value && Object.keys(value).length > 0) {
+      try {
+        console.log('inside try =======');
+        const res = await axios.patch(
+          `http://localhost:8000/api/test/${id}`,
+          value
+        );
+        console.log('id', id, 'value', value, 'res', res);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  
+  
 
-  const handleDelete = (id: number) => {
-    setFormArray((prevFormArray) => prevFormArray.filter((item) => item.id !== id));
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/test/${id}`);
+      setFormArray((prevFormArray) =>
+        prevFormArray.filter((item) => item._id !== id)
+      );
+    } catch (err) {
+      ////show error above
+    }
     setDialogOpen(false);
     setRecordToDelete(null);
   };
 
-  const handleAdd = () => {
-    const newId = formArray.length ? formArray[formArray.length - 1].id + 1 : 1;
-    const newItem: FormItem = {
-      id: newId,
-      firstname: '',
-      lastname: '',
-      email: '',
-      address: '',
-      ratePerHour: 100,
-      hours: 0,
-      total: 0,
-    };
-    setFormArray([...formArray, newItem]);
+  const handleAdd = async () => {
+    try {
+      const res = await axios.post('http://localhost:8000/api/test', {
+        ratePerHour: 100,
+      });
+      console.log(res.data);
+      setFormArray([...formArray, res.data.data]);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleOpenDialog = (id: number) => {
+  const handleOpenDialog = (id: string) => {
     setRecordToDelete(id);
     setDialogOpen(true);
   };
@@ -130,18 +133,35 @@ const Form = () => {
   return (
     <Box className="form">
       <Box className="row">
-        <Typography className="row-item" variant="h6">ID</Typography>
-        <Typography className="row-item" variant="h6">First Name</Typography>
-        <Typography className="row-item" variant="h6">Last Name</Typography>
-        <Typography className="row-item" variant="h6">Address</Typography>
-        <Typography className="row-item" variant="h6">Rate Per Hour</Typography>
-        <Typography className="row-item" variant="h6">Hours</Typography>
-        <Typography className="row-item" variant="h6">Total</Typography>
-        <Typography className="row-item" variant="h6">Actions</Typography>
+        <Typography className="row-item" variant="h6">
+          ID
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          First Name
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Last Name
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Address
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Rate Per Hour
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Hours
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Total
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Actions
+        </Typography>
       </Box>
-      {formArray.map((record: FormItem) => (
+      {formArray.map((record: FormItem, index: number) => (
         <FormRow
-          key={record.id}
+          index={index}
+          key={record._id}
           record={record}
           onFieldChange={handleFieldChange}
           onOpenDialog={handleOpenDialog}
@@ -156,7 +176,9 @@ const Form = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" sx={{color:'black'}}>{"Confirm Delete"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" sx={{ color: 'black' }}>
+          {'Confirm Delete'}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure you want to delete this record?
