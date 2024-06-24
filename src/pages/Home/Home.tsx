@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, TextField, IconButton
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
+import { Table, TableBody, TableContainer, Paper, TableHead, TableRow, TableCell, IconButton } from '@mui/material';
+import Row from './Row';
 import styles from './Home.module.css';
 
 interface DataRow {
@@ -25,97 +21,48 @@ const Home: React.FC = () => {
     const savedData = localStorage.getItem('tableData');
     return savedData ? JSON.parse(savedData) : initialData;
   });
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editingData, setEditingData] = useState<DataRow | null>(null);
 
   useEffect(() => {
     localStorage.setItem('tableData', JSON.stringify(data));
   }, [data]);
 
-  const handleEdit = (row: DataRow) => {
-    setEditingId(row.id);
-    setEditingData({ ...row });
+  const addRow = () => {
+    const newRow: DataRow = {
+      id: data.length + 1,
+      name: '',
+      age: 0,
+      email: '',
+    };
+    setData([...data, newRow]);
   };
 
-  const handleSave = () => {
-    if (editingData) {
-      setData(data.map(item => item.id === editingData.id ? editingData : item));
-      setEditingId(null);
-      setEditingData(null);
-    }
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (editingData) {
-      const { name, value } = event.target as HTMLInputElement;
-      setEditingData({ ...editingData, [name]: name === 'age' ? +value : value });
-    }
+  const updateRow = (updatedRow: DataRow) => {
+    const newData = data.map(item => item.id === updatedRow.id ? updatedRow : item);
+    setData(newData);
+    localStorage.setItem('tableData', JSON.stringify(newData));
   };
 
   return (
     <TableContainer component={Paper} className={styles.tableContainer}>
       <Table className={styles.table}>
-        <TableHead>
+        <TableHead className={styles.tableHead}>
           <TableRow>
-            <TableCell className={styles.tableCell}>Name</TableCell>
-            <TableCell className={styles.tableCell}>Age</TableCell>
-            <TableCell className={styles.tableCell}>Email</TableCell>
-            <TableCell className={styles.tableCell}>Actions</TableCell>
+            <TableCell className={styles.tableHeaderCell}>Name</TableCell>
+            <TableCell className={styles.tableHeaderCell}>Age</TableCell>
+            <TableCell className={styles.tableHeaderCell}>Email</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell className={styles.tableCell}>
-                {editingId === row.id ? (
-                  <TextField
-                    name="name"
-                    value={editingData?.name || ''}
-                    onChange={handleChange}
-                    className={styles.textField}
-                  />
-                ) : (
-                  row.name
-                )}
-              </TableCell>
-              <TableCell className={styles.tableCell}>
-                {editingId === row.id ? (
-                  <TextField
-                    name="age"
-                    type="number"
-                    value={editingData?.age || ''}
-                    onChange={handleChange}
-                    className={styles.textField}
-                  />
-                ) : (
-                  row.age
-                )}
-              </TableCell>
-              <TableCell className={styles.tableCell}>
-                {editingId === row.id ? (
-                  <TextField
-                    name="email"
-                    value={editingData?.email || ''}
-                    onChange={handleChange}
-                    className={styles.textField}
-                  />
-                ) : (
-                  row.email
-                )}
-              </TableCell>
-              <TableCell className={styles.tableCell}>
-                {editingId === row.id ? (
-                  <IconButton onClick={handleSave} className={styles.iconButton}>
-                    <SaveIcon />
-                  </IconButton>
-                ) : (
-                  <IconButton onClick={() => handleEdit(row)} className={styles.iconButton}>
-                    <EditIcon />
-                  </IconButton>
-                )}
-              </TableCell>
-            </TableRow>
+            <Row key={row.id} row={row} updateRow={updateRow} />
           ))}
+          <TableRow>
+            <TableCell colSpan={3} align="center">
+              <IconButton onClick={addRow} className={styles.iconButton}>
+                +
+              </IconButton>
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>

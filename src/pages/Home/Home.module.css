@@ -1,23 +1,47 @@
 
-
 .tableContainer {
-    margin: 20px;
-    padding: 20px;
-  }
-  
-  .table {
-    min-width: 650px;
-  }
-  
-  .tableCell {
-    padding: 10px;
-  }
-  
-  .textField {
-    width: 100%;
-  }
-  
-  .iconButton {
-    margin: 0 5px;
-  }
-  
+  margin: 20px;
+  max-width: 800px;
+  margin-left: 200px;
+  margin-right: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.table {
+  min-width: 650px;
+}
+
+.tableHead {
+  background-color: #f5f5f5;
+}
+
+.tableHeaderCell {
+  font-weight: bold;
+  font-size: 16px;
+  padding: 16px;
+  color: #333;
+}
+
+
+
+
+.row {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.tableCell {
+  padding: 16px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.tableCell:hover {
+  background-color: #f1f1f1;
+}
+
+.textField {
+  width: 100%;
+}
