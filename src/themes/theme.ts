@@ -30,17 +30,6 @@ const theme = createTheme({
           '& .MuiInputBase-input': {
             color: 'white', // text color
           },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: '#556cd6', // border color
-            },
-            '&:hover fieldset': {
-              borderColor: '#19857b', // border color on hover
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#19857b', // border color when focused
-            },
-          },
           '& .Mui-disabled': {
             opacity: 1, // remove default opacity
             '-webkit-text-fill-color': 'white', // change text color
@@ -54,18 +43,18 @@ const theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root:{width: '40px'},
+        root: { width: '40px' },
         containedSecondary: {
-          borderRadius:'50%',
-          minWidth: '40px', 
-          height: '40px', 
+          borderRadius: '50%',
+          minWidth: '40px',
+          height: '40px',
           padding: '10px',
-          marginTop:'5px', 
-          backgroundColor: grey[500], 
+          marginTop: '5px',
+          backgroundColor: grey[500],
           '&.MuiButton-containedSecondary': {
-            color: 'white', 
+            color: 'white',
             '&:hover': {
-              backgroundColor: grey[700], 
+              backgroundColor: grey[700],
             },
           },
         },

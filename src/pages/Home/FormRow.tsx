@@ -6,7 +6,7 @@ import EditableField from './EditableField';
 const FormRow = ({
   record,
   onFieldChange,
-  onOpenDialog
+  onOpenDialog,
 }: {
   record: FormItem;
   onFieldChange: (id: number, name: string, value: string) => void;
@@ -18,31 +18,31 @@ const FormRow = ({
         <Typography className="row-item">{record.id}</Typography>
       </div>
       <EditableField
-        name={'firstname'}
+        name="firstname"
         id={record.id}
         recordItem={record.firstname}
         onFieldChange={onFieldChange}
       />
       <EditableField
-        name={'lastname'}
+        name="lastname"
         id={record.id}
         recordItem={record.lastname}
         onFieldChange={onFieldChange}
       />
       <EditableField
-        name={'address'}
+        name="address"
         id={record.id}
         recordItem={record.address}
         onFieldChange={onFieldChange}
       />
       <EditableField
-        name={'ratePerHour'}
+        name="ratePerHour"
         id={record.id}
         recordItem={record.ratePerHour.toString()}
         onFieldChange={onFieldChange}
       />
       <EditableField
-        name={'hours'}
+        name="hours"
         id={record.id}
         recordItem={record.hours.toString()}
         onFieldChange={onFieldChange}

@@ -1,4 +1,4 @@
-import { TextField, Typography } from '@mui/material';
+import { TextField, Typography, Snackbar, Alert } from '@mui/material';
 import { useState } from 'react';
 
 const EditableField = ({
@@ -16,6 +16,8 @@ const EditableField = ({
 }) => {
   const [editable, setEditable] = useState(false);
   const [value, setValue] = useState(recordItem);
+  const [error, setError] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const onFieldClick = () => {
     if (!isDisabled) {
@@ -31,12 +33,26 @@ const EditableField = ({
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    const newValue = event.target.value;
+    if (name === 'ratePerHour' || name === 'hours') {
+      if (!/^\d*$/.test(newValue)) {
+        setError(true);
+        setSnackbarOpen(true);
+      } else {
+        setError(false);
+        setSnackbarOpen(false);
+      }
+    }
+    setValue(newValue);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
     <div className="input-label">
-      {editable || !value || value == '' ? (
+      {editable || !value || value === '' ? (
         <TextField
           className="row-item"
           variant="outlined"
@@ -46,12 +62,26 @@ const EditableField = ({
           onBlur={onBlur}
           autoFocus
           onChange={handleChange}
+          error={error}
+          
+          InputProps={{
+            style: { borderColor: error ? 'red' : '' },
+          }}
         />
       ) : (
         <Typography className="row-item" onClick={onFieldClick}>
           {value}
         </Typography>
       )}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity="error">
+          Only numbers are allowed!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
