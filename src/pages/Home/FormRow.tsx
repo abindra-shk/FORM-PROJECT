@@ -6,11 +6,11 @@ import EditableField from './EditableField';
 const FormRow = ({
   record,
   onFieldChange,
-  onDelete
+  onOpenDialog
 }: {
   record: FormItem;
   onFieldChange: (id: number, name: string, value: string) => void;
-  onDelete: (id: number) => void;
+  onOpenDialog: (id: number) => void;
 }) => {
   return (
     <Box className="row">
@@ -30,7 +30,7 @@ const FormRow = ({
         onFieldChange={onFieldChange}
       />
       <EditableField
-        name={'lastname'}
+        name={'address'}
         id={record.id}
         recordItem={record.address}
         onFieldChange={onFieldChange}
@@ -51,7 +51,7 @@ const FormRow = ({
         <Typography className="row-item">{record.total}</Typography>
       </div>
       <div className="input-label">
-        <IconButton aria-label="delete" sx={{textAlign:'center'}} onClick={() => onDelete(record.id)}>
+        <IconButton aria-label="delete" onClick={() => onOpenDialog(record.id)}>
           <DeleteIcon sx={{ color: 'white' }} />
         </IconButton>
       </div>

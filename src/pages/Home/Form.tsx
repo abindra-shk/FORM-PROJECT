@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Form.style.css';
 import FormRow from './FormRow';
 import { FormItem } from '../../interface/interface';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 const Form = () => {
@@ -68,40 +68,38 @@ const Form = () => {
       total: 0,
     },
   ]);
-  // eslint-disable-next-line
-  const handleFieldChange = (id: number, name: String, value: any) => {
-    console.log('id', id, 'field', name, 'value', value);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [recordToDelete, setRecordToDelete] = useState<number | null>(null);
+
+    // eslint-disable-next-line
+  const handleFieldChange = (id: number, name: string, value: any) => {
     setFormArray((prevFormArray) =>
       prevFormArray.map((item) => {
-        if (item.id != id) return item;
+        if (item.id !== id) return item;
         const obj = { ...item };
         switch (name) {
           case 'firstname':
             return { ...obj, firstname: value };
-            break;
           case 'lastname':
             return { ...obj, lastname: value };
-            break;
           case 'address':
             return { ...obj, address: value };
-            break;
           case 'ratePerHour':
             return { ...obj, ratePerHour: value, total: obj.hours * value };
-            break;
           case 'hours':
             return { ...obj, hours: value, total: obj.ratePerHour * value };
-            break;
+          default:
+            return obj;
         }
-
-        return obj;
       })
     );
   };
 
   const handleDelete = (id: number) => {
-    setFormArray((prevFormArray) =>
-      prevFormArray.filter((item) => item.id !== id)
-    );
+    setFormArray((prevFormArray) => prevFormArray.filter((item) => item.id !== id));
+    setDialogOpen(false);
+    setRecordToDelete(null);
   };
 
   const handleAdd = () => {
@@ -119,49 +117,58 @@ const Form = () => {
     setFormArray([...formArray, newItem]);
   };
 
+  const handleOpenDialog = (id: number) => {
+    setRecordToDelete(id);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setRecordToDelete(null);
+  };
+
   return (
     <Box className="form">
       <Box className="row">
-        <Typography className="row-item" variant="h6">
-          ID
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          First Name
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Last Name
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Address
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Rate Per Hour
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Hours
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Total
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Actions
-        </Typography>
+        <Typography className="row-item" variant="h6">ID</Typography>
+        <Typography className="row-item" variant="h6">First Name</Typography>
+        <Typography className="row-item" variant="h6">Last Name</Typography>
+        <Typography className="row-item" variant="h6">Address</Typography>
+        <Typography className="row-item" variant="h6">Rate Per Hour</Typography>
+        <Typography className="row-item" variant="h6">Hours</Typography>
+        <Typography className="row-item" variant="h6">Total</Typography>
+        <Typography className="row-item" variant="h6">Actions</Typography>
       </Box>
       {formArray.map((record: FormItem) => (
         <FormRow
           key={record.id}
           record={record}
           onFieldChange={handleFieldChange}
-          onDelete={handleDelete}
+          onOpenDialog={handleOpenDialog}
         />
       ))}
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleAdd}
-      >
+      <Button variant="contained" color="secondary" onClick={handleAdd}>
         <AddIcon />
       </Button>
+      <Dialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title" sx={{color:'black'}}>{"Confirm Delete"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this record?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={() => handleDelete(recordToDelete!)} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
