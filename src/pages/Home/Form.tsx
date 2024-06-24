@@ -41,7 +41,7 @@ const Form = () => {
       prevFormArray.map((item) => {
         if (item._id !== id) return item;
         const obj = { ...item };
-  
+
         switch (name) {
           case 'firstName':
             obj.firstName = value;
@@ -70,18 +70,16 @@ const Form = () => {
           default:
             break;
         }
-  
+
         return obj;
       })
     );
   };
-  
+
   // eslint-disable-next-line
   const updateData = async (id: string, value: any) => {
-    console.log('update data fun********value***********', value);
     if (value && Object.keys(value).length > 0) {
       try {
-        console.log('inside try =======');
         const res = await axios.patch(
           `http://localhost:8000/api/test/${id}`,
           value
@@ -92,8 +90,6 @@ const Form = () => {
       }
     }
   };
-  
-  
 
   const handleDelete = async (id: string) => {
     try {

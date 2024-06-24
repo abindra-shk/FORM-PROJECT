@@ -39,8 +39,6 @@ const EditableField = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
-    console.log('new Value', newValue);
-    console.log('ediatable', editable);
     setEditable(true);
     if (name === 'ratePerHour' || name === 'hours') {
       if (!/^\d*$/.test(newValue)) {
@@ -51,7 +49,6 @@ const EditableField = ({
         setSnackbarOpen(false);
       }
     }
-    console.log('handle change value', newValue);
     setValue(newValue);
   };
 
