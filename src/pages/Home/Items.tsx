@@ -35,9 +35,12 @@ const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, han
 
   const validateInput = (value: string | number) => {
     let errorMessage = null;
-    if (name === 'name' && !value) {
+    if (name === 'fname' && !value) {
+      errorMessage = ' First Name is required';
+    } 
+    else  if (name === 'fname' && !value) {
       errorMessage = 'Name is required';
-    } else if (['age', 'ratePerHour', 'numberOfHours', 'id'].includes(name) && (isNaN(Number(value)) || Number(value) <= 0)) {
+    } else if ([ 'ratePerHour', 'numberOfHours', 'id'].includes(name) && (isNaN(Number(value)) || Number(value) <= 0)) {
       errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must be a positive number`;
     } else if (name === 'email' && (!/\S+@\S+\.\S+/.test(value.toString()))) {
       errorMessage = 'Email is invalid';

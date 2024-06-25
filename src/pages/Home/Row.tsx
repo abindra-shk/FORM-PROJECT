@@ -28,7 +28,7 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const updatedValue = name === 'age' || name === 'ratePerHour' || name === 'numberOfHours' || name === 'id' ? +value : value;
+    const updatedValue = name==='lname' ||name === 'ratePerHour' || name === 'numberOfHours' || name === 'id' ? +value : value;
     const updatedRow = { ...rowData, [name]: updatedValue };
     if (name === 'ratePerHour' || name === 'numberOfHours') {
       updatedRow.total = updatedRow.ratePerHour * updatedRow.numberOfHours;
@@ -52,7 +52,7 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
         setEditingField={setEditingField}
       />
       <Items
-        name="name"
+        name="fname"
         value={rowData.name}
         isEditing={editingField === 'name'}
         handleChange={handleChange}
@@ -60,9 +60,9 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
         setEditingField={setEditingField}
       />
       <Items
-        name="age"
+        name="lname"
         value={rowData.age}
-        isEditing={editingField === 'age'}
+        isEditing={editingField === 'lname'}
         handleChange={handleChange}
         handleBlur={handleBlur}
         setEditingField={setEditingField}

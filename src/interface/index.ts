@@ -3,10 +3,7 @@ export default interface DataRow {
   name: string;
   age: number;
   email: string;
+  ratePerHour: number;
+  numberOfHours: number;
+  total: number;
 }
-
-//    export default interface HandleChangeType{
-//     id: number;
-//     name:string;
-//     value:string;
-//   }

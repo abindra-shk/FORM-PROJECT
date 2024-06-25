@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "json-server -p 3001 --watch db.json",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -13,6 +14,8 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "axios": "^1.7.2",
+    "json-server": "^1.0.0-beta.1",
     "preact": "^10.19.6"
   },
   "devDependencies": {
