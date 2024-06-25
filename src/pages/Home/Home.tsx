@@ -41,7 +41,9 @@ const Home: React.FC = () => {
   };
 
   const deleteRow = (id: number) => {
-    const newData = data.filter(item => item.id !== id);
+    const newData = data
+      .filter(item => item.id !== id)
+      .map((item, index) => ({ ...item, id: index + 1 }));
     setData(newData);
   };
 
