@@ -27,7 +27,6 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          width: '150px',
           '& .MuiInputBase-input': {
             color: 'white', // text color
           },
@@ -43,13 +42,22 @@ const theme = createTheme({
             borderColor: 'dimgrey',
             borderWidth: '2px', // Custom focus border color and width
           },
+          '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: darken('#556cd6', 0.2), // Darken the primary color by 20% on hover
+          },
+          '& .MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline':
+          {
+            borderColor: 'red' ,
+          },
           '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderColor: '#556cd6',
             borderWidth: '2px', // Custom focus border color and width
           },
-          '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: darken('#556cd6', 0.2), // Darken the primary color by 20% on hover
+  
+          '& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline': {
+            borderColor: red.A400, // Custom error border color
           },
+
         },
       },
     },

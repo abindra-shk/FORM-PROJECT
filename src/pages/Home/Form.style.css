@@ -6,20 +6,26 @@
 }
 
 .row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 50px 125px 125px 200px 150px 110px 90px 90px 95px;
   border-bottom: 1px solid grey;
 }
 
-.input-label {
-  width: 150px;
-}
+/* .row > * {
+  padding: 8.5px 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+} */
 
 .row-item {
-  width: 100%;
   padding: 8.5px 14px;
 }
 
 .add-button{
   width: 50px;
   border-radius: 50px;
+
 }
+

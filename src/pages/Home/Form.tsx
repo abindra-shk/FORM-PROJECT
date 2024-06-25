@@ -17,14 +17,13 @@ import axios from 'axios';
 
 const Form = () => {
   const [formArray, setFormArray] = useState<FormItem[]>([]);
-
   const [dialogOpen, setDialogOpen] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const displayAllUsers = async (): Promise<void> => {
     try {
       const res = await axios.get('http://localhost:8000/api/test');
-      console.log('data', res);
       setFormArray(res.data.data);
     } catch (err) {
       console.log(err);
@@ -35,7 +34,7 @@ const Form = () => {
     displayAllUsers();
   }, []);
 
-  // eslint-disable-next-line
+ // eslint-disable-next-line
   const handleFieldChange = (id: string, name: string, value: any) => {
     setFormArray((prevFormArray) =>
       prevFormArray.map((item) => {
@@ -50,6 +49,10 @@ const Form = () => {
           case 'lastName':
             obj.lastName = value;
             updateData(id, { lastName: value });
+            break;
+          case 'email':
+            obj.email = value;
+            updateData(id, { email: value });
             break;
           case 'address':
             obj.address = value;
@@ -80,11 +83,7 @@ const Form = () => {
   const updateData = async (id: string, value: any) => {
     if (value && Object.keys(value).length > 0) {
       try {
-        const res = await axios.patch(
-          `http://localhost:8000/api/test/${id}`,
-          value
-        );
-        console.log('id', id, 'value', value, 'res', res);
+        await axios.patch(`http://localhost:8000/api/test/${id}`, value);
       } catch (err) {
         console.log(err);
       }
@@ -98,7 +97,7 @@ const Form = () => {
         prevFormArray.filter((item) => item._id !== id)
       );
     } catch (err) {
-      ////show error above
+      console.log(err);
     }
     setDialogOpen(false);
     setRecordToDelete(null);
@@ -109,7 +108,6 @@ const Form = () => {
       const res = await axios.post('http://localhost:8000/api/test', {
         ratePerHour: 100,
       });
-      console.log(res.data);
       setFormArray([...formArray, res.data.data]);
     } catch (err) {
       console.log(err);
@@ -126,34 +124,28 @@ const Form = () => {
     setRecordToDelete(null);
   };
 
+  const showError = (message: string) => {
+    setError(message);
+  };
+
   return (
     <Box className="form">
-      <Box className="row">
-        <Typography className="row-item" variant="h6">
-          ID
+      <div className="error-message" style={{ display: error ? 'block' : 'none' }}>
+        <Typography variant="h6" color="error">
+          {error}
         </Typography>
-        <Typography className="row-item" variant="h6">
-          First Name
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Last Name
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Address
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Rate Per Hour
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Hours
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Total
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Actions
-        </Typography>
-      </Box>
+      </div>
+      <div className="row">
+        <Typography className='row-item' variant='h6'>ID</Typography>
+        <Typography className='row-item' variant='h6'>First Name</Typography>
+        <Typography className='row-item' variant='h6'>Last Name</Typography>
+        <Typography className='row-item' variant='h6'>Email</Typography>
+        <Typography className='row-item' variant='h6'>Address</Typography>
+        <Typography className='row-item' variant='h6'>Rate Per Hour</Typography>
+        <Typography className='row-item' variant='h6'>Hours</Typography>
+        <Typography className='row-item' variant='h6'>Total</Typography>
+        <Typography className='row-item' variant='h6'>Actions</Typography>
+      </div>
       {formArray.map((record: FormItem, index: number) => (
         <FormRow
           index={index}
@@ -161,6 +153,7 @@ const Form = () => {
           record={record}
           onFieldChange={handleFieldChange}
           onOpenDialog={handleOpenDialog}
+          showError={showError}
         />
       ))}
       <Button variant="contained" color="secondary" onClick={handleAdd}>
