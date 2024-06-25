@@ -7,12 +7,15 @@ interface DataRow {
   name: string;
   age: number;
   email: string;
+  ratePerHour: number;
+  numberOfHours: number;
+  total: number;
 }
 
 const initialData: DataRow[] = [
-  { id: 1, name: 'Ram Adhikari', age: 10, email: 'ram@gmail.com' },
-  { id: 2, name: 'Sita Nepal', age: 19, email: 'sita@gmail.com' },
-  { id: 3, name: 'Hari Kc', age: 80, email: 'Hari@gmail.com' },
+  { id: 1, name: 'Ram Adhikari', age: 10, email: 'ram@gmail.com', ratePerHour: 0, numberOfHours: 0, total: 0 },
+  { id: 2, name: 'Sita Nepal', age: 19, email: 'sita@gmail.com', ratePerHour: 0, numberOfHours: 0, total: 0 },
+  { id: 3, name: 'Hari Kc', age: 80, email: 'Hari@gmail.com', ratePerHour: 0, numberOfHours: 0, total: 0 },
 ];
 
 const Home: React.FC = () => {
@@ -31,6 +34,9 @@ const Home: React.FC = () => {
       name: '',
       age: 0,
       email: '',
+      ratePerHour: 0,
+      numberOfHours: 0,
+      total: 0,
     };
     setData([...data, newRow]);
   };
@@ -56,6 +62,9 @@ const Home: React.FC = () => {
             <div className={styles.tableHeaderCell}>Name</div>
             <div className={styles.tableHeaderCell}>Age</div>
             <div className={styles.tableHeaderCell}>Email</div>
+            <div className={styles.tableHeaderCell}>Rate per Hour</div>
+            <div className={styles.tableHeaderCell}>Number of Hours</div>
+            <div className={styles.tableHeaderCell}>Total</div>
             <div className={styles.tableHeaderCell}>Action</div>
           </div>
         </div>

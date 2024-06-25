@@ -37,12 +37,10 @@ const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, han
     let errorMessage = null;
     if (name === 'name' && !value) {
       errorMessage = 'Name is required';
-    } else if (name === 'age' && (isNaN(Number(value)) || Number(value) <= 0)) {
-      errorMessage = 'Age must be a positive number';
+    } else if (['age', 'ratePerHour', 'numberOfHours', 'id'].includes(name) && (isNaN(Number(value)) || Number(value) <= 0)) {
+      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must be a positive number`;
     } else if (name === 'email' && (!/\S+@\S+\.\S+/.test(value.toString()))) {
       errorMessage = 'Email is invalid';
-    } else if (name === 'id' && (isNaN(Number(value)) || Number(value) <= 0)) {
-      errorMessage = 'ID must be a positive number';
     }
     setError(errorMessage);
     return errorMessage === null;

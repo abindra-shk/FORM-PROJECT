@@ -7,6 +7,9 @@ interface DataRow {
   name: string;
   age: number;
   email: string;
+  ratePerHour: number;
+  numberOfHours: number;
+  total: number;
 }
 
 interface RowProps {
@@ -25,7 +28,12 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setRowData({ ...rowData, [name]: name === 'age' || name === 'id' ? +value : value });
+    const updatedValue = name === 'age' || name === 'ratePerHour' || name === 'numberOfHours' || name === 'id' ? +value : value;
+    const updatedRow = { ...rowData, [name]: updatedValue };
+    if (name === 'ratePerHour' || name === 'numberOfHours') {
+      updatedRow.total = updatedRow.ratePerHour * updatedRow.numberOfHours;
+    }
+    setRowData(updatedRow);
   };
 
   const handleBlur = () => {
@@ -67,6 +75,25 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
         handleBlur={handleBlur}
         setEditingField={setEditingField}
       />
+      <Items
+        name="ratePerHour"
+        value={rowData.ratePerHour}
+        isEditing={editingField === 'ratePerHour'}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        setEditingField={setEditingField}
+      />
+      <Items
+        name="numberOfHours"
+        value={rowData.numberOfHours}
+        isEditing={editingField === 'numberOfHours'}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        setEditingField={setEditingField}
+      />
+      <div className={styles.tableCell}>
+        {rowData.total}
+      </div>
       <div className={styles.tableCell}>
         <button onClick={() => deleteRow(row.id)} className={styles.deleteButton}>Delete</button>
       </div>
