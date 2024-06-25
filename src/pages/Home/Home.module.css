@@ -43,18 +43,30 @@
   border: 1px solid #ccc;
   border-radius: 4px; /* Optional: Rounded corners */
   outline: none;
-  padding: 8px;
+  padding: 9px;
 }
 
 .inputField:focus {
   border: 1px solid #007bff;
+  padding: 9px;
 }
 
 .addButton {
-  background: none;
+  background: #7e98b5; /* Background color */
+  color: #100f0f; /* Text color */
   border: none;
-  font-size: 20px;
+  border-radius: 50%; /* Round shape */
+  font-size: 24px;
   cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addButton:hover {
+  background: #0056b3; /* Darker background on hover */
 }
 
 .error {

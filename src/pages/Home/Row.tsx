@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Home.module.css';
 import Items from './Items';
 
@@ -12,31 +12,35 @@ interface DataRow {
 interface RowProps {
   row: DataRow;
   updateRow: (row: DataRow) => void;
+  deleteRow: (id: number) => void;
 }
 
-const Row: React.FC<RowProps> = ({ row, updateRow }) => {
+const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [rowData, setRowData] = useState(row);
+
+  useEffect(() => {
+    setRowData(row);
+  }, [row]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setRowData({ ...rowData, [name]: name === 'age' || name === 'id' ? +value : value });
   };
 
-  const handleEdit = () => {
-    if (editingField) {
-      updateRow(rowData);
-      setEditingField(null);
-    }
+  const handleBlur = () => {
+    updateRow(rowData);
+    setEditingField(null);
   };
 
   return (
-    <div className={styles.tableRow} onBlur={handleEdit}>
+    <div className={styles.tableRow}>
       <Items
         name="id"
         value={rowData.id}
         isEditing={editingField === 'id'}
         handleChange={handleChange}
+        handleBlur={handleBlur}
         setEditingField={setEditingField}
       />
       <Items
@@ -44,6 +48,7 @@ const Row: React.FC<RowProps> = ({ row, updateRow }) => {
         value={rowData.name}
         isEditing={editingField === 'name'}
         handleChange={handleChange}
+        handleBlur={handleBlur}
         setEditingField={setEditingField}
       />
       <Items
@@ -51,6 +56,7 @@ const Row: React.FC<RowProps> = ({ row, updateRow }) => {
         value={rowData.age}
         isEditing={editingField === 'age'}
         handleChange={handleChange}
+        handleBlur={handleBlur}
         setEditingField={setEditingField}
       />
       <Items
@@ -58,8 +64,12 @@ const Row: React.FC<RowProps> = ({ row, updateRow }) => {
         value={rowData.email}
         isEditing={editingField === 'email'}
         handleChange={handleChange}
+        handleBlur={handleBlur}
         setEditingField={setEditingField}
       />
+      <div className={styles.tableCell}>
+        <button onClick={() => deleteRow(row.id)} className={styles.deleteButton}>Delete</button>
+      </div>
     </div>
   );
 };

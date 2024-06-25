@@ -6,10 +6,11 @@ interface ItemsProps {
   value: string | number;
   isEditing: boolean;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: () => void;
   setEditingField: (field: string | null) => void;
 }
 
-const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, setEditingField }) => {
+const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, handleBlur, setEditingField }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,6 +29,7 @@ const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, set
   const handleClickOutside = (event: MouseEvent) => {
     if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
       setEditingField(null);
+      handleBlur();
     }
   };
 
@@ -62,6 +64,7 @@ const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, set
             value={value}
             onChange={handleInputChange}
             className={styles.inputField}
+            onBlur={handleBlur}
           />
           {error && <div className={styles.error}>{error}</div>}
         </div>

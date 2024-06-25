@@ -40,6 +40,11 @@ const Home: React.FC = () => {
     setData(newData);
   };
 
+  const deleteRow = (id: number) => {
+    const newData = data.filter(item => item.id !== id);
+    setData(newData);
+  };
+
   return (
     <div className={styles.tableContainer}>
       <div className={styles.table}>
@@ -49,11 +54,12 @@ const Home: React.FC = () => {
             <div className={styles.tableHeaderCell}>Name</div>
             <div className={styles.tableHeaderCell}>Age</div>
             <div className={styles.tableHeaderCell}>Email</div>
+            <div className={styles.tableHeaderCell}>Action</div>
           </div>
         </div>
         <div className={styles.tableBody}>
           {data.map((row) => (
-            <Row key={row.id} row={row} updateRow={updateRow} />
+            <Row key={row.id} row={row} updateRow={updateRow} deleteRow={deleteRow} />
           ))}
           <div className={styles.tableRow}>
             <div className={styles.tableCell} style={{ textAlign: 'center' }}>
