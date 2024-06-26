@@ -1,7 +1,7 @@
 import { TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 
-const NumberField = ({
+const CurrencyField = ({
   recordItem,
   isDisabled = false,
   onFieldChange,
@@ -38,22 +38,30 @@ const NumberField = ({
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.value;
     setEditable(true);
-    if (!/^\d*$/.test(newValue)) {
+    const newValue = event.target.value;
+
+    // Check for invalid characters (any character that is not a digit or a dollar sign)
+    if (/[^0-9$]/.test(newValue)) {
       setError(true);
       showError('Only numbers are allowed!');
       return;
     }
-    if (name === 'hours' && Number(newValue) > 12) {
+
+    // Remove dollar signs in the middle of the value (if any)
+    const numericValue = newValue.replace(/\$/g, '');
+
+    if (Number(numericValue) > 1000) {
       setError(true);
-      showError('Only 12 hours of work can be recorded!');
+      showError('Value cannot exceed 1000!');
       return;
     }
+
     setError(false);
-    setValue(newValue);
+    setValue(numericValue);
     showError('');
   };
+
 
   return (
     <div>
@@ -62,7 +70,7 @@ const NumberField = ({
           className="row-item"
           variant="outlined"
           size="small"
-          value={value}
+          value={value ? `$${value}` : ''}
           onBlur={onBlur}
           autoFocus
           onChange={handleChange}
@@ -70,11 +78,11 @@ const NumberField = ({
         />
       ) : (
         <Typography className="row-item" onClick={onFieldClick}>
-          {value}
+          {value ? `$${value}` : ''}
         </Typography>
       )}
     </div>
   );
 };
 
-export default NumberField;
+export default CurrencyField;

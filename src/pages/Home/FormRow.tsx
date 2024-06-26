@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { FormItem } from '../../interface/interface';
 import EditableField from './EditableField';
 import NumberField from './NumberField';
+import CurrencyValidationField from './CurrencyField';
 
 const FormRow = ({
   record,
@@ -44,7 +45,8 @@ const FormRow = ({
         recordItem={record.address}
         onFieldChange={onFieldChange}
       />
-      <NumberField
+
+      <CurrencyValidationField
         name="ratePerHour"
         id={record._id}
         recordItem={record.ratePerHour.toString()}
@@ -58,7 +60,7 @@ const FormRow = ({
         onFieldChange={onFieldChange}
         showError={showError}
       />
-      <Typography className='row-item'>{record.total}</Typography>
+      <Typography className="row-item">${record.total}</Typography>
       <IconButton aria-label="delete" onClick={() => onOpenDialog(record._id)}>
         <DeleteIcon sx={{ color: 'white' }} />
       </IconButton>

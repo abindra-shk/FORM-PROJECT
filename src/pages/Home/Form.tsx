@@ -34,7 +34,7 @@ const Form = () => {
     displayAllUsers();
   }, []);
 
- // eslint-disable-next-line
+  // eslint-disable-next-line
   const handleFieldChange = (id: string, name: string, value: any) => {
     setFormArray((prevFormArray) =>
       prevFormArray.map((item) => {
@@ -60,13 +60,21 @@ const Form = () => {
             break;
           case 'ratePerHour':
             obj.ratePerHour = value;
-            obj.total = obj.hours * value;
+            if (obj.ratePerHour.toString().trim().length != 0) {
+              obj.total = obj.hours * value;
+            } else {
+              obj.total = NaN;
+            }
             updateData(id, { ratePerHour: value });
             updateData(id, { total: obj.total });
             break;
           case 'hours':
             obj.hours = value;
-            obj.total = obj.ratePerHour * value;
+            if (obj.hours.toString().trim().length != 0) {
+              obj.total = obj.ratePerHour * value;
+            } else {
+              obj.total = NaN;
+            }
             updateData(id, { hours: value });
             updateData(id, { total: obj.total });
             break;
@@ -130,21 +138,42 @@ const Form = () => {
 
   return (
     <Box className="form">
-      <div className="error-message" style={{ display: error ? 'block' : 'none' }}>
+      <div
+        className="error-message"
+        style={{ display: error ? 'block' : 'none' }}
+      >
         <Typography variant="h6" color="error">
           {error}
         </Typography>
       </div>
       <div className="row">
-        <Typography className='row-item' variant='h6'>ID</Typography>
-        <Typography className='row-item' variant='h6'>First Name</Typography>
-        <Typography className='row-item' variant='h6'>Last Name</Typography>
-        <Typography className='row-item' variant='h6'>Email</Typography>
-        <Typography className='row-item' variant='h6'>Address</Typography>
-        <Typography className='row-item' variant='h6'>Rate Per Hour</Typography>
-        <Typography className='row-item' variant='h6'>Hours</Typography>
-        <Typography className='row-item' variant='h6'>Total</Typography>
-        <Typography className='row-item' variant='h6'>Actions</Typography>
+        <Typography className="row-item" variant="h6">
+          ID
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          First Name
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Last Name
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Email
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Address
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Rate Per Hour
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Hours
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Total
+        </Typography>
+        <Typography className="row-item" variant="h6">
+          Actions
+        </Typography>
       </div>
       {formArray.map((record: FormItem, index: number) => (
         <FormRow
