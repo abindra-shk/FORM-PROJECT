@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ErrorIcon from '@mui/icons-material/Error';
 import './Form.style.css';
 import FormRow from './FormRow';
 import { FormItem } from '../../interface/interface';
@@ -143,6 +144,7 @@ const Form = () => {
         style={{ display: error ? 'block' : 'none' }}
       >
         <Typography variant="h6" color="error">
+          <ErrorIcon sx={{ marginRight: 1 }} />
           {error}
         </Typography>
       </div>

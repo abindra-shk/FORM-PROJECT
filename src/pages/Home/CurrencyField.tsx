@@ -44,7 +44,7 @@ const CurrencyField = ({
     // Check for invalid characters (any character that is not a digit or a dollar sign)
     if (/[^0-9$]/.test(newValue)) {
       setError(true);
-      showError('Only numbers are allowed!');
+      showError('Only numbers are allowed !!');
       return;
     }
 
@@ -53,7 +53,7 @@ const CurrencyField = ({
 
     if (Number(numericValue) > 1000) {
       setError(true);
-      showError('Value cannot exceed 1000!');
+      showError('Value cannot exceed 1000 !!');
       return;
     }
 

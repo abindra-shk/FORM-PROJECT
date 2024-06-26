@@ -42,12 +42,12 @@ const NumberField = ({
     setEditable(true);
     if (!/^\d*$/.test(newValue)) {
       setError(true);
-      showError('Only numbers are allowed!');
+      showError('Only numbers are allowed !!');
       return;
     }
     if (name === 'hours' && Number(newValue) > 12) {
       setError(true);
-      showError('Only 12 hours of work can be recorded!');
+      showError('Only 12 hours of work can be recorded !!');
       return;
     }
     setError(false);

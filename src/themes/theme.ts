@@ -21,6 +21,7 @@ const theme = createTheme({
       fontWeight: 700,
       textTransform: 'uppercase',
       color: 'white',
+      display:'flex',
     },
   },
   components: {
