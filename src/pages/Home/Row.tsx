@@ -1,6 +1,8 @@
+// Row.tsx
 import React, { useState, useEffect } from 'react';
 import styles from './Home.module.css';
 import Items from './Items';
+import ConfirmDialog from './ConfirmDialog';
 
 interface DataRow {
   id: number;
@@ -21,6 +23,7 @@ interface RowProps {
 const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [rowData, setRowData] = useState(row);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setRowData(row);
@@ -28,7 +31,7 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const updatedValue = name==='lname' ||name === 'ratePerHour' || name === 'numberOfHours' || name === 'id' ? +value : value;
+    const updatedValue = name === 'lname' || name === 'ratePerHour' || name === 'numberOfHours' || name === 'id' ? +value : value;
     const updatedRow = { ...rowData, [name]: updatedValue };
     if (name === 'ratePerHour' || name === 'numberOfHours') {
       updatedRow.total = updatedRow.ratePerHour * updatedRow.numberOfHours;
@@ -39,6 +42,19 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
   const handleBlur = () => {
     updateRow(rowData);
     setEditingField(null);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    deleteRow(row.id);
+    setOpen(false);
   };
 
   return (
@@ -95,8 +111,9 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
         {rowData.total}
       </div>
       <div className={styles.tableCell}>
-        <button onClick={() => deleteRow(row.id)} className={styles.deleteButton}>Delete</button>
+        <button onClick={handleClickOpen} className={styles.deleteButton}>Delete</button>
       </div>
+      <ConfirmDialog open={open} handleClose={handleClose} handleConfirm={handleConfirm} />
     </div>
   );
 };
