@@ -4,6 +4,7 @@ import { FormItem } from '../../interface/interface';
 import EditableField from './EditableField';
 import NumberField from './NumberField';
 import CurrencyValidationField from './CurrencyField';
+import EmailField from './EmailField';
 
 const FormRow = ({
   record,
@@ -33,11 +34,12 @@ const FormRow = ({
         recordItem={record.lastName}
         onFieldChange={onFieldChange}
       />
-      <EditableField
+      <EmailField
         name="email"
         id={record._id}
         recordItem={record.email}
         onFieldChange={onFieldChange}
+        showError={showError}
       />
       <EditableField
         name="address"
