@@ -52,7 +52,7 @@ const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, han
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (validateInput(event.target.value)) {
+    if (validateInput((event.target as HTMLInputElement) .value)) {
       handleChange(event);
     }
   };

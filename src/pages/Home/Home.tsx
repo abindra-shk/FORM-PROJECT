@@ -4,7 +4,8 @@ import styles from "./Home.module.css";
 import axios from "axios";
 
 interface DataRow {
-  id: number;
+  index?:number;
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -32,7 +33,7 @@ const Home: React.FC = () => {
 
   const addRow = () => {
     const newRow: DataRow = {
-      id: data.length + 1,
+      _id: (data.length + 1).toString(),
       firstName: "",
       lastName: "",
       email: "",
@@ -46,9 +47,12 @@ const Home: React.FC = () => {
 
   const updateRow = async (updatedRow: DataRow) => {
     try {
-      await axios.put(`http://localhost:8000/api/test/${updatedRow.id}`, updatedRow);
+      await axios.put(
+        `http://localhost:8000/api/test/${updatedRow._id}`,
+        updatedRow
+      );
       const newData = data.map((item) =>
-        item.id === updatedRow.id ? updatedRow : item
+        item._id === updatedRow._id ? updatedRow : item
       );
       setData(newData);
     } catch (error) {
@@ -56,10 +60,10 @@ const Home: React.FC = () => {
     }
   };
 
-  const deleteRow = async (id: number) => {
+  const deleteRow = async (id: number|string) => {
     try {
       await axios.delete(`http://localhost:8000/api/test/${id}`);
-      const newData = data.filter((item) => item.id !== id);
+      const newData = data.filter((item) => item._id !== id);
       setData(newData);
     } catch (error) {
       console.error("Error deleting row", error);
@@ -84,12 +88,14 @@ const Home: React.FC = () => {
         </div>
         <div className={styles.tableBody}>
           {data.map((row) => (
-            <Row
-              key={row.id}
-              row={row}
-              updateRow={updateRow}
-              deleteRow={deleteRow}
-            />
+      <Row
+
+      key={row._id}
+      row={row}
+      updateRow={updateRow}
+      deleteRow={deleteRow}
+      
+    />
           ))}
           <div className={styles.tableRow}>
             <div className={styles.tableCell} style={{ textAlign: "center" }}>
