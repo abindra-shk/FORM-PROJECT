@@ -32,7 +32,7 @@ const EmailField = ({
 
   const onBlur = () => {
     setEditable(false);
-    if (onFieldChange && value !== recordItem) {
+    if (!error && onFieldChange && value !== recordItem) {
       onFieldChange(id, name, value);
     }
   };
@@ -67,7 +67,10 @@ const EmailField = ({
           error={error}
         />
       ) : (
-        <Typography className="row-item" onClick={onFieldClick}>
+        <Typography
+          className={`row-item ${error ? 'error-border' : ''}`}
+          onClick={onFieldClick}
+        >
           {value}
         </Typography>
       )}

@@ -32,6 +32,8 @@ const CurrencyField = ({
 
   const onBlur = () => {
     setEditable(false);
+    setError(false);
+    showError('');
     if (onFieldChange && value !== recordItem) {
       onFieldChange(id, name, value);
     }
@@ -42,7 +44,7 @@ const CurrencyField = ({
     const newValue = event.target.value;
 
     // Check for invalid characters (any character that is not a digit or a dollar sign)
-    if (/[^0-9$]/.test(newValue)) {
+    if (/[^0-9$.]/.test(newValue)) {
       setError(true);
       showError('Only numbers are allowed !!');
       return;
@@ -50,6 +52,14 @@ const CurrencyField = ({
 
     // Remove dollar signs in the middle of the value (if any)
     const numericValue = newValue.replace(/\$/g, '');
+
+    // Check for more than two digits after the decimal point
+    const parts = numericValue.split('.');
+    if (parts.length === 2 && parts[1].length > 2) {
+      setError(true);
+      showError('Only up to two digits are allowed after the decimal point !!');
+      return;
+    }
 
     if (Number(numericValue) > 1000) {
       setError(true);
@@ -61,7 +71,6 @@ const CurrencyField = ({
     setValue(numericValue);
     showError('');
   };
-
 
   return (
     <div>

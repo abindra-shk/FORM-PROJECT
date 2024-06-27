@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import axios from 'axios';
+import StaticHeading from './StaticHeading';
 
 const Form = () => {
   const [formArray, setFormArray] = useState<FormItem[]>([]);
@@ -93,8 +94,10 @@ const Form = () => {
     if (value && Object.keys(value).length > 0) {
       try {
         await axios.patch(`http://localhost:8000/api/test/${id}`, value);
-      } catch (err) {
-        console.log(err);
+      } catch (err: any) {
+        console.log(err.response.data.message);
+        setError(err.response.data.message);
+
       }
     }
   };
@@ -148,35 +151,7 @@ const Form = () => {
           {error}
         </Typography>
       </div>
-      <div className="row">
-        <Typography className="row-item" variant="h6">
-          ID
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          First Name
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Last Name
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Email
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Address
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Rate Per Hour
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Hours
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Total
-        </Typography>
-        <Typography className="row-item" variant="h6">
-          Actions
-        </Typography>
-      </div>
+      <StaticHeading />
       {formArray.map((record: FormItem, index: number) => (
         <FormRow
           index={index}
