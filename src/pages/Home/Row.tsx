@@ -3,26 +3,28 @@ import React, { useState, useEffect } from 'react';
 import styles from './Home.module.css';
 import Items from './Items';
 import ConfirmDialog from './ConfirmDialog';
+import axios from 'axios';
 
 interface DataRow {
   id: number;
-  name: string;
-  age: number;
+  firstName: string;
+  lastName: string;
   email: string;
+  address: string;
   ratePerHour: number;
-  numberOfHours: number;
+  hours: number;
   total: number;
 }
 
 interface RowProps {
   row: DataRow;
-  updateRow: (row: DataRow) => void;
-  deleteRow: (id: number) => void;
+  updateRow: (updatedRow: DataRow) => Promise<void>;
+  deleteRow: (id: number) => Promise<void>;
 }
 
 const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
   const [editingField, setEditingField] = useState<string | null>(null);
-  const [rowData, setRowData] = useState(row);
+  const [rowData, setRowData] = useState<DataRow>(row);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -31,16 +33,20 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const updatedValue = name === 'lname' || name === 'ratePerHour' || name === 'numberOfHours' || name === 'id' ? +value : value;
+    const updatedValue = ['ratePerHour', 'hours', 'id'].includes(name) ? +value : value;
     const updatedRow = { ...rowData, [name]: updatedValue };
-    if (name === 'ratePerHour' || name === 'numberOfHours') {
-      updatedRow.total = updatedRow.ratePerHour * updatedRow.numberOfHours;
+    if (name === 'ratePerHour' || name === 'hours') {
+      updatedRow.total = updatedRow.ratePerHour * updatedRow.hours;
     }
     setRowData(updatedRow);
   };
 
-  const handleBlur = () => {
-    updateRow(rowData);
+  const handleBlur = async () => {
+    try {
+      await updateRow(rowData);
+    } catch (error) {
+      console.error('Error updating row', error);
+    }
     setEditingField(null);
   };
 
@@ -52,8 +58,12 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
     setOpen(false);
   };
 
-  const handleConfirm = () => {
-    deleteRow(row.id);
+  const handleConfirm = async () => {
+    try {
+      await deleteRow(row.id);
+    } catch (error) {
+      console.error('Error deleting row', error);
+    }
     setOpen(false);
   };
 
@@ -68,17 +78,17 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
         setEditingField={setEditingField}
       />
       <Items
-        name="fname"
-        value={rowData.name}
-        isEditing={editingField === 'name'}
+        name="firstName"
+        value={rowData.firstName}
+        isEditing={editingField === 'firstName'}
         handleChange={handleChange}
         handleBlur={handleBlur}
         setEditingField={setEditingField}
       />
       <Items
-        name="lname"
-        value={rowData.age}
-        isEditing={editingField === 'lname'}
+        name="lastName"
+        value={rowData.lastName}
+        isEditing={editingField === 'lastName'}
         handleChange={handleChange}
         handleBlur={handleBlur}
         setEditingField={setEditingField}
@@ -92,6 +102,14 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
         setEditingField={setEditingField}
       />
       <Items
+        name="address"
+        value={rowData.address}
+        isEditing={editingField === 'address'}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        setEditingField={setEditingField}
+      />
+      <Items
         name="ratePerHour"
         value={rowData.ratePerHour}
         isEditing={editingField === 'ratePerHour'}
@@ -100,9 +118,9 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
         setEditingField={setEditingField}
       />
       <Items
-        name="numberOfHours"
-        value={rowData.numberOfHours}
-        isEditing={editingField === 'numberOfHours'}
+        name="hours"
+        value={rowData.hours}
+        isEditing={editingField === 'hours'}
         handleChange={handleChange}
         handleBlur={handleBlur}
         setEditingField={setEditingField}
@@ -112,8 +130,8 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
       </div>
       <div className={styles.tableCell}>
         <button onClick={handleClickOpen} className={styles.deleteButton}>Delete</button>
+        {open && <ConfirmDialog open={open} handleClose={handleClose} handleConfirm={handleConfirm} />}
       </div>
-      <ConfirmDialog open={open} handleClose={handleClose} handleConfirm={handleConfirm} />
     </div>
   );
 };

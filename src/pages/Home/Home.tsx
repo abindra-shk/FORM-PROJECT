@@ -1,86 +1,69 @@
 import React, { useState, useEffect } from "react";
 import Row from "./Row";
 import styles from "./Home.module.css";
-import DataRow from "../../interface";
 import axios from "axios";
 
-const initialData: DataRow[] = [
-  {
-    id: 1,
-    name: "Ram Adhikari",
-    age: 10,
-    email: "ram@gmail.com",
-    ratePerHour: 10,
-    numberOfHours: 50,
-    total: 500,
-  },
-  {
-    id: 2,
-    name: "Sita Nepal",
-    age: 19,
-    email: "sita@gmail.com",
-    ratePerHour: 60,
-    numberOfHours: 5,
-    total: 300,
-  },
-  {
-    id: 3,
-    name: "Hari Kc",
-    age: 80,
-    email: "Hari@gmail.com",
-    ratePerHour: 50,
-    numberOfHours: 10,
-    total: 500,
-  },
-];
+interface DataRow {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  address: string;
+  ratePerHour: number;
+  hours: number;
+  total: number;
+}
 
 const Home: React.FC = () => {
-  const [data, setData] = useState<DataRow[]>(() => {
-    const savedData = localStorage.getItem("tableData");
-    return savedData ? JSON.parse(savedData) : initialData;
-  });
+  const [data, setData] = useState<DataRow[]>([]);
 
-  const displayAllUsers = async (): Promise<void> => {
+  const fetchData = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/test");
-      console.log("data", res.data.data);
-      setData(res.data.data);
-      // setFormArray(res.data.data);
-    } catch (err) {
-      console.log(err);
+      const response = await axios.get("http://localhost:8000/api/test");
+      setData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching data", error);
     }
   };
 
   useEffect(() => {
-    localStorage.setItem("tableData", JSON.stringify(data));
-    displayAllUsers();
-  }, [data]);
+    fetchData();
+  }, []);
 
   const addRow = () => {
     const newRow: DataRow = {
       id: data.length + 1,
-      name: "",
-      age: 0,
+      firstName: "",
+      lastName: "",
       email: "",
+      address: "",
       ratePerHour: 0,
-      numberOfHours: 0,
+      hours: 0,
       total: 0,
     };
     setData([...data, newRow]);
   };
 
-  const updateRow = (updatedRow: DataRow) => {
-    const newData = data.map((item) =>
-      item.id === updatedRow.id ? updatedRow : item
-    );
-    setData(newData);
+  const updateRow = async (updatedRow: DataRow) => {
+    try {
+      await axios.put(`http://localhost:8000/api/test/${updatedRow.id}`, updatedRow);
+      const newData = data.map((item) =>
+        item.id === updatedRow.id ? updatedRow : item
+      );
+      setData(newData);
+    } catch (error) {
+      console.error("Error updating row", error);
+    }
   };
 
-  const deleteRow = (id: number) => {
-    const newData = data
-      .filter((item) => item.id !== id)
-      .map((item, index) => ({ ...item, id: index + 1 }));
-    setData(newData);
+  const deleteRow = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/test/${id}`);
+      const newData = data.filter((item) => item.id !== id);
+      setData(newData);
+    } catch (error) {
+      console.error("Error deleting row", error);
+    }
   };
 
   return (
@@ -89,11 +72,12 @@ const Home: React.FC = () => {
         <div className={styles.tableHead}>
           <div className={styles.tableRow}>
             <div className={styles.tableHeaderCell}>ID</div>
-            <div className={styles.tableHeaderCell}>FName</div>
-            <div className={styles.tableHeaderCell}>LName</div>
+            <div className={styles.tableHeaderCell}>First Name</div>
+            <div className={styles.tableHeaderCell}>Last Name</div>
             <div className={styles.tableHeaderCell}>Email</div>
+            <div className={styles.tableHeaderCell}>Address</div>
             <div className={styles.tableHeaderCell}>Rate per Hour</div>
-            <div className={styles.tableHeaderCell}>Number of Hours</div>
+            <div className={styles.tableHeaderCell}>Hours</div>
             <div className={styles.tableHeaderCell}>Total</div>
             <div className={styles.tableHeaderCell}>Action</div>
           </div>

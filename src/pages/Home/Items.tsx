@@ -1,3 +1,4 @@
+// Items.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import styles from './Home.module.css';
 
@@ -35,14 +36,15 @@ const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, han
 
   const validateInput = (value: string | number) => {
     let errorMessage = null;
-    if (name === 'fname' && !value) {
-      errorMessage = ' First Name is required';
-    } 
-    else  if (name === 'fname' && !value) {
-      errorMessage = 'Name is required';
-    } else if ([ 'ratePerHour', 'numberOfHours', 'id'].includes(name) && (isNaN(Number(value)) || Number(value) <= 0)) {
-      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must be a positive number`;
-    } else if (name === 'email' && (!/\S+@\S+\.\S+/.test(value.toString()))) {
+    if (name === 'firstName' && !value) {
+      errorMessage = 'First Name is required';
+    } else if (name === 'lastName' && !value) {
+      errorMessage = 'Last Name is required';
+    } else if (['ratePerHour', 'hours', 'id'].includes(name) && isNaN(Number(value))) {
+      errorMessage = 'Value must be a number';
+    } else if (['ratePerHour', 'hours', 'id'].includes(name) && Number(value) <= 0) {
+      errorMessage = 'Value must be a positive number';
+    } else if (name === 'email' && !/\S+@\S+\.\S+/.test(value.toString())) {
       errorMessage = 'Email is invalid';
     }
     setError(errorMessage);

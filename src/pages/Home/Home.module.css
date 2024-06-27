@@ -2,10 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left:150px;
+  margin-left: 150px;
   padding: 20px;
   min-height: 100vh;
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
 }
 
 .table {
@@ -14,7 +14,7 @@
   border-collapse: collapse;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
-  margin: 20px 0; 
+  margin: 20px 0;
 }
 
 .tableHead {
@@ -22,15 +22,17 @@
 }
 
 .tableRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: 80px 100px 100px 200px 100px 100px 100px 80px 80px;
   border-bottom: 1px solid #ddd;
 }
 
-.tableHeaderCell, .tableCell {
+.tableHeaderCell,
+.tableCell {
   flex: 1;
-  padding: 15px; /* Increased padding for better spacing */
+  padding: 15px; 
   text-align: left;
-  box-sizing: border-box; /* Ensure padding doesn't affect the size */
+  box-sizing: border-box; 
 }
 
 .tableHeaderCell {
@@ -41,7 +43,7 @@
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #ccc;
-  border-radius: 4px; /* Optional: Rounded corners */
+  border-radius: 4px; 
   outline: none;
   padding: 9px;
 }
@@ -52,10 +54,10 @@
 }
 
 .addButton {
-  background: #7e98b5; /* Background color */
-  color: #100f0f; /* Text color */
+  background: #7e98b5; 
+  color: #100f0f; 
   border: none;
-  border-radius: 50%; /* Round shape */
+  border-radius: 50%; 
   font-size: 24px;
   cursor: pointer;
   width: 40px;
@@ -66,13 +68,13 @@
 }
 
 .addButton:hover {
-  background: #0056b3; /* Darker background on hover */
+  background: #0056b3; 
 }
 
 .error {
   color: red;
   font-size: 12px;
-  margin-top: 5px; /* Space between input and error message */
+  margin-top: 5px; 
 }
 
 .tableRow:hover .tableCell {
@@ -82,10 +84,49 @@
 .tableCell {
   cursor: pointer;
   display: flex;
-  align-items: center; /* Center content vertically */
+  align-items: center; 
 }
 
 .tableCell input {
   font-size: inherit;
   padding: 0;
+}
+
+
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancelButton, .confirmButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-left: 10px;
+}
+
+.cancelButton {
+  background-color: #f44336;
 }

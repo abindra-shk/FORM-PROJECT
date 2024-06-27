@@ -12,11 +12,14 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "axios": "^1.7.2",
     "json-server": "^1.0.0-beta.1",
-    "preact": "^10.19.6"
+    "preact": "^10.19.6",
+    "zustand": "^4.5.3"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.2",
