@@ -1,4 +1,3 @@
-// Items.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import styles from './Home.module.css';
 
@@ -40,9 +39,9 @@ const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, han
       errorMessage = 'First Name is required';
     } else if (name === 'lastName' && !value) {
       errorMessage = 'Last Name is required';
-    } else if (['ratePerHour', 'hours', 'id'].includes(name) && isNaN(Number(value))) {
+    } else if (['ratePerHour', 'hours'].includes(name) && isNaN(Number(value))) {
       errorMessage = 'Value must be a number';
-    } else if (['ratePerHour', 'hours', 'id'].includes(name) && Number(value) <= 0) {
+    } else if (['ratePerHour', 'hours'].includes(name) && Number(value) <= 0) {
       errorMessage = 'Value must be a positive number';
     } else if (name === 'email' && !/\S+@\S+\.\S+/.test(value.toString())) {
       errorMessage = 'Email is invalid';
@@ -52,14 +51,14 @@ const Items: React.FC<ItemsProps> = ({ name, value, isEditing, handleChange, han
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (validateInput((event.target as HTMLInputElement) .value)) {
+    if (validateInput((event.target as HTMLInputElement).value)) {
       handleChange(event);
     }
   };
 
   return (
-    <div className={styles.tableCell} onClick={() => setEditingField(name)}>
-      {isEditing ? (
+    <div className={styles.tableCell} onClick={() => name !== '_id' && setEditingField(name)}>
+      {isEditing && name !== '_id' ? (
         <div>
           <input
             ref={inputRef}

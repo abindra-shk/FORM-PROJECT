@@ -16,11 +16,12 @@ interface DataRow {
 
 interface RowProps {
   row: DataRow;
+  index: number;
   updateRow: (updatedRow: DataRow) => Promise<void>;
   deleteRow: (id: string) => Promise<void>;
 }
 
-const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
+const Row: React.FC<RowProps> = ({ row, index, updateRow, deleteRow }) => {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [rowData, setRowData] = useState<DataRow>(row);
   const [open, setOpen] = useState(false);
@@ -41,9 +42,11 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
 
   const handleBlur = async () => {
     try {
+      console.log("Updating row with data:", rowData);
       await updateRow(rowData);
+      console.log("Row updated successfully");
     } catch (error) {
-      console.error("Error updating row", error);
+      console.error("Error updating row:", error);
     }
     setEditingField(null);
   };
@@ -60,21 +63,14 @@ const Row: React.FC<RowProps> = ({ row, updateRow, deleteRow }) => {
     try {
       await deleteRow(row._id);
     } catch (error) {
-      console.error("Error deleting row", error);
+      console.error("Error deleting row:", error);
     }
     setOpen(false);
   };
 
   return (
     <div className={styles.tableRow}>
-      <Items
-        name="_id"
-        value={rowData._id}
-        isEditing={editingField === "_id"}
-        handleChange={handleChange}
-        handleBlur={handleBlur}
-        setEditingField={setEditingField}
-      />
+      <div className={styles.tableCell}>{index + 1}</div>
       <Items
         name="firstName"
         value={rowData.firstName}
