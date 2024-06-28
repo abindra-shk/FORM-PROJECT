@@ -29,13 +29,26 @@
 
 }
 
-.error-message{
-  margin-left: 10px;
-}
 
 .error-border {
   border: 2px solid red;
   border-radius: 4px;
   height: 20px;
 }
+
+.hidden {
+  display: none;
+}
+
+.error-message {
+  opacity: 0;
+  margin-left: 10px;
+  height: 25px;
+  margin-bottom: 10px;
+}
+
+.error-message.visible {
+  opacity: 1;
+}
+
 

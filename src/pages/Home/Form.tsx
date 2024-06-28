@@ -14,8 +14,14 @@ import {
   DialogTitle,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import axios from 'axios';
 import StaticHeading from './StaticHeading';
+import {
+  GetRequest,
+  PostRequest,
+  DeleteRequest,
+  PatchRequest,
+} from '../../utils/services';
+import { API_ENDPOINTS } from '../../utils/constant';
 
 const Form = () => {
   const [formArray, setFormArray] = useState<FormItem[]>([]);
@@ -25,7 +31,7 @@ const Form = () => {
 
   const displayAllUsers = async (): Promise<void> => {
     try {
-      const res = await axios.get('http://localhost:8000/api/test');
+      const res = await GetRequest(API_ENDPOINTS.TEST);
       setFormArray(res.data.data);
     } catch (err) {
       console.log(err);
@@ -36,7 +42,6 @@ const Form = () => {
     displayAllUsers();
   }, []);
 
-  // eslint-disable-next-line
   const handleFieldChange = (id: string, name: string, value: any) => {
     setFormArray((prevFormArray) =>
       prevFormArray.map((item) => {
@@ -62,7 +67,7 @@ const Form = () => {
             break;
           case 'ratePerHour':
             obj.ratePerHour = value;
-            if (obj.ratePerHour.toString().trim().length != 0) {
+            if (obj.ratePerHour.toString().trim().length !== 0) {
               obj.total = obj.hours * value;
             } else {
               obj.total = NaN;
@@ -72,7 +77,7 @@ const Form = () => {
             break;
           case 'hours':
             obj.hours = value;
-            if (obj.hours.toString().trim().length != 0) {
+            if (obj.hours.toString().trim().length !== 0) {
               obj.total = obj.ratePerHour * value;
             } else {
               obj.total = NaN;
@@ -89,22 +94,20 @@ const Form = () => {
     );
   };
 
-  // eslint-disable-next-line
   const updateData = async (id: string, value: any) => {
     if (value && Object.keys(value).length > 0) {
       try {
-        await axios.patch(`http://localhost:8000/api/test/${id}`, value);
+        await PatchRequest(`${API_ENDPOINTS.TEST}/${id}`, value);
       } catch (err: any) {
         console.log(err.response.data.message);
         setError(err.response.data.message);
-
       }
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:8000/api/test/${id}`);
+      await DeleteRequest(`${API_ENDPOINTS.TEST}/${id}`);
       setFormArray((prevFormArray) =>
         prevFormArray.filter((item) => item._id !== id)
       );
@@ -117,7 +120,7 @@ const Form = () => {
 
   const handleAdd = async () => {
     try {
-      const res = await axios.post('http://localhost:8000/api/test', {
+      const res = await PostRequest(API_ENDPOINTS.TEST, {
         ratePerHour: 100,
       });
       setFormArray([...formArray, res.data.data]);
@@ -142,15 +145,13 @@ const Form = () => {
 
   return (
     <Box className="form">
-      <div
-        className="error-message"
-        style={{ display: error ? 'block' : 'none' }}
-      >
+      <div className={`error-message ${error ? 'visible' : ''}`}>
         <Typography variant="h6" color="error">
           <ErrorIcon sx={{ marginRight: 1 }} />
           {error}
         </Typography>
       </div>
+
       <StaticHeading />
       {formArray.map((record: FormItem, index: number) => (
         <FormRow

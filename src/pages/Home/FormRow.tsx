@@ -18,6 +18,7 @@ const FormRow = ({
   onFieldChange: (id: string, name: string, value: string) => void;
   onOpenDialog: (id: string) => void;
   showError: (message: string) => void;
+
 }) => {
   return (
     <Box className="row">
@@ -40,6 +41,7 @@ const FormRow = ({
         recordItem={record.email}
         onFieldChange={onFieldChange}
         showError={showError}
+  
       />
       <EditableField
         name="address"
