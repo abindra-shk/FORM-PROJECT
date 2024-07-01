@@ -28,7 +28,7 @@ const Form = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [errorId,setErrorId] = useState<string | null >(null);
+  const [errorId, setErrorId] = useState<string | null>(null);
 
   const displayAllUsers = async (): Promise<void> => {
     try {
@@ -86,6 +86,11 @@ const Form = () => {
             updateData(id, { hours: value });
             updateData(id, { total: obj.total });
             break;
+          // case 'startDate':
+          // case 'endDate':
+          //   obj[name] = value;
+          //   obj.days = calculateDays(obj.startDate, obj.endDate);
+          //   break;
           default:
             break;
         }
@@ -102,7 +107,7 @@ const Form = () => {
       } catch (err: any) {
         console.log(err.response.data.message);
         // setError(err.response.data.message);
-        console.log('errorId',id)
+        console.log('errorId', id);
         setErrorId(id);
       }
     }
@@ -161,8 +166,8 @@ const Form = () => {
           index={index}
           key={record._id}
           record={record}
-          errorId = {errorId}
-          setErrorId = {setErrorId}
+          errorId={errorId}
+          setErrorId={setErrorId}
           onFieldChange={handleFieldChange}
           onOpenDialog={handleOpenDialog}
           showError={showError}
