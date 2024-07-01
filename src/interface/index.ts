@@ -1,9 +1,11 @@
-export default interface DataRow {
-  id: number;
-  name: string;
-  age: number;
+export interface FormItem {
+  index?: number;
+  _id: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  address: string;
   ratePerHour: number;
-  numberOfHours: number;
+  hours: number;
   total: number;
 }

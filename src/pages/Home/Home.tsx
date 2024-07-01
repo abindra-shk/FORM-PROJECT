@@ -2,21 +2,14 @@ import React, { useState, useEffect } from "react";
 import Row from "./Row";
 import styles from "./Home.module.css";
 import axios from "axios";
-
-interface DataRow {
-  index?: number;
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  address: string;
-  ratePerHour: number;
-  hours: number;
-  total: number;
-}
+import {FormItem} from "../../interface/index";
 
 const Home: React.FC = () => {
-  const [data, setData] = useState<DataRow[]>([]);
+  const [data, setData] = useState<FormItem[]>([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -27,13 +20,10 @@ const Home: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const addRow = () => {
-    const newRow: DataRow = {
-      _id: (data.length + 1).toString(),
+    const newId = `temp_${data.length + 1}`; // Generate a temporary ID for new rows
+    const newRow: FormItem = {
+      _id: newId,
       firstName: "",
       lastName: "",
       email: "",
@@ -42,28 +32,46 @@ const Home: React.FC = () => {
       hours: 0,
       total: 0,
     };
-    setData([...data, newRow]);
+    setData([...data, newRow]); 
   };
 
-  const updateRow = async (updatedRow: DataRow) => {
+  const updateRow = async (updatedRow: FormItem) => {
     try {
-      await axios.put(`http://localhost:8000/api/test/${updatedRow._id}`, updatedRow);
-      const newData = data.map((item) =>
-        item._id === updatedRow._id ? updatedRow : item
-      );
-      setData(newData);
+      if (updatedRow._id.startsWith("temp_")) {
+        // New row, check if it has data entered
+        if (updatedRow.firstName !== "" || updatedRow.lastName !== "" || updatedRow.email !== "" || updatedRow.address !== "" || updatedRow.ratePerHour !== 0 || updatedRow.hours !== 0) {
+          // for post
+          const response = await axios.post(
+            "http://localhost:8000/api/test",
+            { ...updatedRow, _id: updatedRow._id.replace("temp_", "") } // Replace temporary ID format with the actual ID format
+          );
+          console.log("New row added:", response.data);
+          fetchData(); // fetch updated data
+        }
+      } else {
+        // existing data through patch
+        const response = await axios.patch(
+          `http://localhost:8000/api/test/${updatedRow._id}`,
+          updatedRow
+        );
+        console.log("Row updated successfully:", response.data);
+        const newData = data.map((item) =>
+          item._id === updatedRow._id ? updatedRow : item
+        );
+        setData(newData);
+      }
     } catch (error) {
-      console.error("Error updating row", error);
+      console.error("Error updating row:", error);
     }
   };
 
-  const deleteRow = async (id: number | string) => {
+  const deleteRow = async (id: string) => {
     try {
       await axios.delete(`http://localhost:8000/api/test/${id}`);
       const newData = data.filter((item) => item._id !== id);
       setData(newData);
     } catch (error) {
-      console.error("Error deleting row", error);
+      console.error("Error deleting row:", error);
     }
   };
 

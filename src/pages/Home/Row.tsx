@@ -1,29 +1,21 @@
+
+
 import React, { useState, useEffect } from "react";
 import styles from "./Home.module.css";
 import Items from "./Items";
 import ConfirmDialog from "./ConfirmDialog";
-
-interface DataRow {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  address: string;
-  ratePerHour: number;
-  hours: number;
-  total: number;
-}
+import { FormItem } from "../../interface/index"; 
 
 interface RowProps {
-  row: DataRow;
+  row: FormItem;
   index: number;
-  updateRow: (updatedRow: DataRow) => Promise<void>;
+  updateRow: (updatedRow: FormItem) => Promise<void>;
   deleteRow: (id: string) => Promise<void>;
 }
 
 const Row: React.FC<RowProps> = ({ row, index, updateRow, deleteRow }) => {
   const [editingField, setEditingField] = useState<string | null>(null);
-  const [rowData, setRowData] = useState<DataRow>(row);
+  const [rowData, setRowData] = useState<FormItem>(row);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -137,3 +129,5 @@ const Row: React.FC<RowProps> = ({ row, index, updateRow, deleteRow }) => {
 };
 
 export default Row;
+
+                  
