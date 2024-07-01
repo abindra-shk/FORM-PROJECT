@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react";
 import Row from "./Row";
 import styles from "./Home.module.css";
 import axios from "axios";
-import {FormItem} from "../../interface/index";
+import { FormItem } from "../../interface/index";
+// import { v4 as uuidv4 } from 'uuid';
 
 const Home: React.FC = () => {
   const [data, setData] = useState<FormItem[]>([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const fetchData = async () => {
     try {
@@ -19,6 +16,9 @@ const Home: React.FC = () => {
       console.error("Error fetching data", error);
     }
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const addRow = () => {
     const newId = `temp_${data.length + 1}`; // Generate a temporary ID for new rows
@@ -32,40 +32,77 @@ const Home: React.FC = () => {
       hours: 0,
       total: 0,
     };
-    setData([...data, newRow]); 
+    setData([...data, newRow]);
+  };
+  const validatePayload = (updatedRow: FormItem) => {
+    if (
+      updatedRow.firstName == "" ||
+      updatedRow.lastName == "" ||
+      updatedRow.email == "" ||
+      updatedRow.address == "" ||
+      updatedRow.ratePerHour == 0 ||
+      updatedRow.hours == 0
+    ) {
+      return;
+    }
+  };
+  const updateCurrentData = (updatedRow: FormItem, updatdData: FormItem) => {
+    if (updatedRow._id?.startsWith("temp_")) {
+      const oldData = [...data];
+      oldData[oldData.length] = updatdData;
+      setData(oldData);
+    } else {
+      setData(
+        data.map((item) => {
+          if (item._id == updatdData._id) {
+            return updatdData;
+          }
+          return item;
+        })
+      );
+    }
   };
 
   const updateRow = async (updatedRow: FormItem) => {
     try {
-      if (updatedRow._id.startsWith("temp_")) {
-        // New row, check if it has data entered
-        if (updatedRow.firstName !== "" || updatedRow.lastName !== "" || updatedRow.email !== "" || updatedRow.address !== "" || updatedRow.ratePerHour !== 0 || updatedRow.hours !== 0) {
-          // for post
-          const response = await axios.post(
-            "http://localhost:8000/api/test",
-            { ...updatedRow, _id: updatedRow._id.replace("temp_", "") } // Replace temporary ID format with the actual ID format
-          );
-          console.log("New row added:", response.data);
-          fetchData(); // fetch updated data
-        }
+      validatePayload(updatedRow);
+      let payload = { ...updatedRow };
+      let response = null;
+      if (updatedRow._id?.startsWith("temp_")) {
+        delete payload._id;
+        const newId = (data.length + 1).toString();
+        response = await axios.post(
+          `http://localhost:8000/api/test/${newId}`,
+          payload // updatedRow._id.replace("temp_", "")Replace temporary ID format with the actual ID format
+        );
       } else {
-        // existing data through patch
-        const response = await axios.patch(
+        // response = await axios.patch(
+        //   "http://localhost:8000/api/test",
+        //   { ...payload}
+        // );
+        response = await axios.patch(
           `http://localhost:8000/api/test/${updatedRow._id}`,
-          updatedRow
+          (payload = {
+            firstName: updatedRow.firstName,
+            lastName: updatedRow.lastName,
+            email: updatedRow.email,
+            address: updatedRow.address,
+            ratePerHour: updatedRow.ratePerHour,
+            hours: updatedRow.hours,
+            total: updatedRow.total,
+          })
         );
-        console.log("Row updated successfully:", response.data);
-        const newData = data.map((item) =>
-          item._id === updatedRow._id ? updatedRow : item
-        );
-        setData(newData);
       }
+
+      const updatdData = response.data;
+      updateCurrentData(updatedRow, updatdData);
+      console.log("New row added:", response.data);
     } catch (error) {
       console.error("Error updating row:", error);
     }
   };
 
-  const deleteRow = async (id: string) => {
+  const deleteRow = async (id?: string) => {
     try {
       await axios.delete(`http://localhost:8000/api/test/${id}`);
       const newData = data.filter((item) => item._id !== id);

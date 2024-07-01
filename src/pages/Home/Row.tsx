@@ -10,7 +10,7 @@ interface RowProps {
   row: FormItem;
   index: number;
   updateRow: (updatedRow: FormItem) => Promise<void>;
-  deleteRow: (id: string) => Promise<void>;
+  deleteRow: (id?: string) => Promise<void>;
 }
 
 const Row: React.FC<RowProps> = ({ row, index, updateRow, deleteRow }) => {
