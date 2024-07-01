@@ -8,7 +8,8 @@ const EmailField = ({
   id,
   name,
   showError,
-
+  errorId,
+  setErrorId,
 }: {
   recordItem: string;
   isDisabled?: boolean;
@@ -16,6 +17,8 @@ const EmailField = ({
   id: string;
   name: string;
   showError: (message: string) => void;
+  errorId: string | null;
+  setErrorId: (id: string | null) => void;
 }) => {
   const [editable, setEditable] = useState(false);
   const [value, setValue] = useState(recordItem);
@@ -23,7 +26,11 @@ const EmailField = ({
 
   useEffect(() => {
     setValue(recordItem);
-  }, [recordItem]);
+    if (errorId && errorId == id) {
+      console.log('errorId in emailField', errorId);
+      setError(true);
+    }
+  }, [recordItem, errorId, id]);
 
   const onFieldClick = () => {
     if (!isDisabled) {
@@ -51,6 +58,9 @@ const EmailField = ({
     } else {
       setError(false);
       showError('');
+      if (errorId === id) {
+        setErrorId(null);
+      }
     }
   };
 
