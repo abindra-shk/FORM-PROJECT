@@ -101,7 +101,7 @@ const Form = () => {
         await PatchRequest(`${API_ENDPOINTS.TEST}/${id}`, value);
       } catch (err: any) {
         console.log(err.response.data.message);
-        setError(err.response.data.message);
+        // setError(err.response.data.message);
         console.log('errorId',id)
         setErrorId(id);
       }

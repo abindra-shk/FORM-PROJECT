@@ -1,4 +1,4 @@
-import { TextField, Typography } from '@mui/material';
+import { TextField, Typography, Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 
 const EmailField = ({
@@ -23,12 +23,13 @@ const EmailField = ({
   const [editable, setEditable] = useState(false);
   const [value, setValue] = useState(recordItem);
   const [error, setError] = useState(false);
+  const [helperText, setHelperText] = useState('');
 
   useEffect(() => {
     setValue(recordItem);
-    if (errorId && errorId == id) {
-      console.log('errorId in emailField', errorId);
+    if (errorId && errorId === id) {
       setError(true);
+      setHelperText('User with this email already exists.');
     }
   }, [recordItem, errorId, id]);
 
@@ -65,7 +66,7 @@ const EmailField = ({
   };
 
   return (
-    <div>
+    <Box>
       {editable || !value || value === '' ? (
         <TextField
           className="row-item"
@@ -76,16 +77,24 @@ const EmailField = ({
           autoFocus
           onChange={handleChange}
           error={error}
+          helperText={helperText}
         />
       ) : (
-        <Typography
-          className={`row-item ${error ? 'error-border' : ''}`}
-          onClick={onFieldClick}
-        >
-          {value}
-        </Typography>
+        <>
+          <Typography
+            className={`row-item ${error ? 'error-border' : ''}`}
+            onClick={onFieldClick}
+          >
+            {value}
+          </Typography>
+          {error && (
+            <Typography variant="caption" color="error">
+              {helperText}
+            </Typography>
+          )}
+        </>
       )}
-    </div>
+    </Box>
   );
 };
 

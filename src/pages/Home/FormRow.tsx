@@ -20,7 +20,7 @@ const FormRow = ({
   onFieldChange: (id: string, name: string, value: string) => void;
   onOpenDialog: (id: string) => void;
   showError: (message: string) => void;
-  errorId: string | null;
+  errorId :string | null;
   setErrorId: (id: string | null) => void;
 }) => {
   return (
@@ -41,11 +41,12 @@ const FormRow = ({
       <EmailField
         name="email"
         id={record._id}
-        errorId={errorId}
+        errorId ={errorId}
         recordItem={record.email}
         onFieldChange={onFieldChange}
         showError={showError}
-        setErrorId={setErrorId}
+        setErrorId = {setErrorId}
+  
       />
       <EditableField
         name="address"
@@ -68,7 +69,7 @@ const FormRow = ({
         onFieldChange={onFieldChange}
         showError={showError}
       />
-      <Typography className="row-item">${record.total.toFixed(2)}</Typography>
+      <Typography className="row-item"> ${record.total.toFixed(2)}</Typography>
       <IconButton aria-label="delete" onClick={() => onOpenDialog(record._id)}>
         <DeleteIcon sx={{ color: 'white' }} />
       </IconButton>
