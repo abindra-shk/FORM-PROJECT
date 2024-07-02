@@ -22,6 +22,7 @@ import {
   PatchRequest,
 } from '../../utils/services';
 import { API_ENDPOINTS } from '../../utils/constant';
+import dayjs, { Dayjs } from 'dayjs';
 
 const Form = () => {
   const [formArray, setFormArray] = useState<FormItem[]>([]);
@@ -34,7 +35,7 @@ const Form = () => {
     try {
       const res = await GetRequest(API_ENDPOINTS.TEST);
       setFormArray(res.data.data);
-      console.log('users',res);
+      console.log('users', res);
     } catch (err) {
       console.log(err);
     }
@@ -88,6 +89,28 @@ const Form = () => {
           //   obj[name] = value;
           //   obj.days = calculateDays(obj.startDate, obj.endDate);
           //   break;
+          case 'startDate':
+          case 'endDate':
+            obj[name] = value;
+            if (
+              name === 'startDate' &&
+              obj.endDate &&
+              dayjs(value).isAfter(dayjs(obj.endDate))
+            ) {
+              setError('Start date cannot be after end date');
+            } else if (
+              name === 'endDate' &&
+              obj.startDate &&
+              dayjs(value).isBefore(dayjs(obj.startDate))
+            ) {
+              setError('End date cannot be before start date');
+            } else {
+              obj.days = calculateDays(obj.startDate, obj.endDate);
+              setError(null);
+              updateData(id, { [name]: value });
+              updateData(id, { days: obj.days });
+            }
+            break;
           default:
             break;
         }
@@ -108,6 +131,13 @@ const Form = () => {
         setErrorId(id);
       }
     }
+  };
+
+  const calculateDays = (startDate: Dayjs | null, endDate: Dayjs | null) => {
+    if (startDate && endDate) {
+      return dayjs(endDate).diff(dayjs(startDate), 'day');
+    }
+    return 0;
   };
 
   const handleDelete = async (id: string) => {

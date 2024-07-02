@@ -52,6 +52,11 @@ const DateField = ({
     setEditable(false);
   };
 
+  const handleClose = () => {
+    setEditable(false);
+    // If you need to do something on close, you can add it here.
+  };
+
   return (
     <div ref={datePickerRef}>
       {editable ? (
@@ -59,9 +64,10 @@ const DateField = ({
           <DatePicker
             value={dateValue}
             onChange={handleChange}
-            onClose={() => setEditable(false)}
+            onClose={handleClose}
             format="YYYY-MM-DD"
             disableFuture
+            autoFocus
             slotProps={{
               textField: {
                 onBlur: handleBlur,
