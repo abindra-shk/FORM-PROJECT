@@ -3,25 +3,38 @@ import Row from "./Row";
 import styles from "./Home.module.css";
 import axios from "axios";
 import { FormItem } from "../../interface/index";
-// import { v4 as uuidv4 } from 'uuid';
+import { API_ENDPOINTS } from '../../service/constants';
+import {
+  GetRequest,
+  // PostRequest,
+  // DeleteRequest,
+  // PatchRequest,
+} from '../../service/services';
 
 const Home: React.FC = () => {
   const [data, setData] = useState<FormItem[]>([]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/test");
-      setData(response.data.data);
+      const response = await GetRequest(API_ENDPOINTS.TEST);
+      if (response && response.data && Array.isArray(response.data.data)) {
+        setData(response.data.data);
+      } else {
+        console.error("Unexpected response structure", response);
+        setData([]);
+      }
     } catch (error) {
       console.error("Error fetching data", error);
+      setData([]); // Ensure data is an array even if there's an error
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const addRow = () => {
-    const newId = `temp_${data.length + 1}`; 
+    const newId = `temp_${data.length + 1}`;
     const newRow: FormItem = {
       _id: newId,
       firstName: "",
@@ -34,69 +47,58 @@ const Home: React.FC = () => {
     };
     setData([...data, newRow]);
   };
+
   const validatePayload = (updatedRow: FormItem) => {
     if (
-      updatedRow.firstName == "" ||
-      updatedRow.lastName == "" ||
-      updatedRow.email == "" ||
-      updatedRow.address == "" ||
-      updatedRow.ratePerHour == 0 ||
-      updatedRow.hours == 0
+      updatedRow.firstName === "" ||
+      updatedRow.lastName === "" ||
+      updatedRow.email === "" ||
+      updatedRow.address === "" ||
+      updatedRow.ratePerHour === 0 ||
+      updatedRow.hours === 0
     ) {
-      return;
+      return false;
     }
+    return true;
   };
-  const updateCurrentData = (updatedRow: FormItem, updatdData: FormItem) => {
+
+  const updateCurrentData = (updatedRow: FormItem, updatedData: FormItem) => {
     if (updatedRow._id?.startsWith("temp_")) {
       const oldData = [...data];
-      oldData[oldData.length] = updatdData;
+      oldData[oldData.length - 1] = updatedData; // Replace the last added temp row with the actual data
       setData(oldData);
     } else {
       setData(
-        data.map((item) => {
-          if (item._id == updatdData._id) {
-            return updatdData;
-          }
-          return item;
-        })
+        data.map((item) => (item._id === updatedData._id ? updatedData : item))
       );
     }
   };
 
   const updateRow = async (updatedRow: FormItem) => {
     try {
-      validatePayload(updatedRow);
+      if (!validatePayload(updatedRow)) {
+        console.warn("Validation failed for row", updatedRow);
+        return;
+      }
+
       let payload = { ...updatedRow };
       let response = null;
       if (updatedRow._id?.startsWith("temp_")) {
         delete payload._id;
-        const newId = (data.length + 1).toString();
         response = await axios.post(
           "http://localhost:8000/api/test/",
-          payload // updatedRow._id.replace("temp_", "")Replace temporary ID format with the actual ID format
+          payload
         );
       } else {
-        // response = await axios.patch(
-        //   "http://localhost:8000/api/test",
-        //   { ...payload}
-        // );
         response = await axios.patch(
           `http://localhost:8000/api/test/${updatedRow._id}`,
-          (payload = {
-            firstName: updatedRow.firstName,
-            lastName: updatedRow.lastName,
-            email: updatedRow.email,
-            address: updatedRow.address,
-            ratePerHour: updatedRow.ratePerHour,
-            hours: updatedRow.hours,
-            total: updatedRow.total,
-          })
+          payload
         );
       }
 
-      const updatdData = response.data;
-      updateCurrentData(updatedRow, updatdData);
-      console.log("New row added:", response.data);
+      const updatedData = response.data;
+      updateCurrentData(updatedRow, updatedData);
+      console.log("Row updated:", response.data);
     } catch (error) {
       console.error("Error updating row:", error);
     }
@@ -129,15 +131,19 @@ const Home: React.FC = () => {
           </div>
         </div>
         <div className={styles.tableBody}>
-          {data.map((row, index) => (
-            <Row
-              key={row._id}
-              row={row}
-              index={index}
-              updateRow={updateRow}
-              deleteRow={deleteRow}
-            />
-          ))}
+          {data.length > 0 ? (
+            data.map((row, index) => (
+              <Row
+                key={row._id}
+                row={row}
+                index={index}
+                updateRow={updateRow}
+                deleteRow={deleteRow}
+              />
+            ))
+          ) : (
+            <div>No data available</div>
+          )}
           <div className={styles.tableRow}>
             <div className={styles.tableCell} style={{ textAlign: "center" }}>
               <button onClick={addRow} className={styles.addButton}>
