@@ -1,26 +1,88 @@
-
-import { Dayjs } from 'dayjs';
+import { Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { useState, useEffect, useRef, FocusEventHandler } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { DatePicker } from '@mui/x-date-pickers';
 
 const DateField = ({
-  label,
-  value,
-  onChange,
+  recordItem,
+  onFieldChange,
+  id,
+  name,
 }: {
-  label: string;
-  value: Dayjs | null;
-  onChange: (newValue: Dayjs | null) => void;
+  recordItem: Dayjs | null;
+  onFieldChange?: (id: string, name: string, value: string) => void;
+  id: string;
+  name: string;
 }) => {
+  const [editable, setEditable] = useState(false);
+  const [dateValue, setDateValue] = useState<Dayjs | null>(recordItem ? dayjs(recordItem) : null);
+  const [error, setError] = useState<string | null>(null);
+  const datePickerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setDateValue(recordItem ? dayjs(recordItem) : null);
+  }, [recordItem]);
+
+  const onFieldClick = () => {
+    setEditable(true);
+  };
+
+  const handleChange = (newValue: Dayjs | null) => {
+    if (newValue && newValue.isAfter(dayjs())) {
+      setError('Future dates are not allowed');
+    } else {
+      setError(null);
+      setDateValue(newValue);
+      if (onFieldChange) {
+        onFieldChange(id, name, newValue ? newValue.format('YYYY-MM-DD') : '');
+      }
+    }
+  };
+
+  const handleBlur: FocusEventHandler<HTMLTextAreaElement | HTMLInputElement> = (event) => {
+    if (
+      datePickerRef.current &&
+      event.relatedTarget instanceof Node &&
+      datePickerRef.current.contains(event.relatedTarget)
+    ) {
+      return; // Do nothing if blur event is within DatePicker component
+    }
+    setEditable(false);
+  };
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker
-        label={label}
-        value={value}
-        onChange={onChange}
-      />
-    </LocalizationProvider>
+    <div ref={datePickerRef}>
+      {editable ? (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            value={dateValue}
+            onChange={handleChange}
+            onClose={() => setEditable(false)}
+            format="YYYY-MM-DD"
+            disableFuture
+            slotProps={{
+              textField: {
+                onBlur: handleBlur,
+                autoFocus: true,
+                variant: 'outlined',
+                size: 'small',
+                error: !!error,
+                helperText: error,
+                InputProps: {
+                  style: { height: '42px' },
+                },
+              },
+            }}
+          />
+        </LocalizationProvider>
+      ) : (
+        <Typography className="row-item" onClick={onFieldClick}>
+          {dateValue ? dateValue.format('YYYY-MM-DD') : ''}
+        </Typography>
+      )}
+    </div>
   );
 };
 

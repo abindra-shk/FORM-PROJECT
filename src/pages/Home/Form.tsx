@@ -34,6 +34,7 @@ const Form = () => {
     try {
       const res = await GetRequest(API_ENDPOINTS.TEST);
       setFormArray(res.data.data);
+      console.log('users',res);
     } catch (err) {
       console.log(err);
     }
@@ -50,13 +51,9 @@ const Form = () => {
         const obj = { ...item };
 
         switch (name) {
-          case 'firstName':
-            obj.firstName = value;
-            updateData(id, { firstName: value });
-            break;
-          case 'lastName':
-            obj.lastName = value;
-            updateData(id, { lastName: value });
+          case 'name':
+            obj.name = value;
+            updateData(id, { name: value });
             break;
           case 'email':
             obj.email = value;

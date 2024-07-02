@@ -21,13 +21,16 @@ const theme = createTheme({
       fontWeight: 700,
       textTransform: 'uppercase',
       color: 'white',
-      display:'flex',
+      display: 'flex',
     },
   },
   components: {
     MuiTextField: {
       styleOverrides: {
         root: {
+          '& .MuiInputBase-root.MuiOutlinedInput-root': {
+            height: '42px', // Set the height directly here
+          },
           '& .MuiInputBase-input': {
             color: 'white', // text color
           },
@@ -47,18 +50,19 @@ const theme = createTheme({
             borderColor: darken('#556cd6', 0.2), // Darken the primary color by 20% on hover
           },
           '& .MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline':
-          {
-            borderColor: 'red' ,
-          },
-          '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#556cd6',
-            borderWidth: '2px', // Custom focus border color and width
-          },
-  
-          '& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline': {
-            borderColor: red.A400, // Custom error border color
-          },
+            {
+              borderColor: 'red',
+            },
+          '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+            {
+              borderColor: '#556cd6',
+              borderWidth: '2px', // Custom focus border color and width
+            },
 
+          '& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline':
+            {
+              borderColor: red.A400, // Custom error border color
+            },
         },
       },
     },
@@ -78,6 +82,13 @@ const theme = createTheme({
               backgroundColor: grey[700],
             },
           },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: 'grey', // Set the color of the icon button
         },
       },
     },

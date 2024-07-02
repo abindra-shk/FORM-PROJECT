@@ -7,16 +7,16 @@ const StaticHeading = () => {
         ID
       </Typography>
       <Typography className="row-item" variant="h6">
-        First Name
-      </Typography>
-      <Typography className="row-item" variant="h6">
-        Last Name
-      </Typography>
-      <Typography className="row-item" variant="h6">
-        Email
+        Name
       </Typography>
       <Typography className="row-item" variant="h6">
         Address
+      </Typography>
+      {/* <Typography className="row-item" variant="h6">
+        Last Name
+      </Typography> */}
+      <Typography className="row-item" variant="h6">
+        Email
       </Typography>
       <Typography className="row-item" variant="h6">
         Rate Per Hour
@@ -26,6 +26,15 @@ const StaticHeading = () => {
       </Typography>
       <Typography className="row-item" variant="h6">
         Total
+      </Typography>
+      <Typography className="row-item" variant="h6">
+        Start Date
+      </Typography>
+      <Typography className="row-item" variant="h6">
+        End Date
+      </Typography>
+      <Typography className="row-item" variant="h6">
+        Days
       </Typography>
       <Typography className="row-item" variant="h6">
         Actions

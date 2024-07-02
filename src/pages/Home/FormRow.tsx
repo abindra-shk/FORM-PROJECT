@@ -5,6 +5,7 @@ import EditableField from './EditableField';
 import NumberField from './NumberField';
 import CurrencyValidationField from './CurrencyField';
 import EmailField from './EmailField';
+import DateField from './DateField';
 
 const FormRow = ({
   record,
@@ -20,33 +21,18 @@ const FormRow = ({
   onFieldChange: (id: string, name: string, value: string) => void;
   onOpenDialog: (id: string) => void;
   showError: (message: string) => void;
-  errorId :string | null;
+  errorId: string | null;
   setErrorId: (id: string | null) => void;
 }) => {
+
   return (
     <Box className="row">
       <Typography className="row-item">{index + 1}</Typography>
       <EditableField
-        name="firstName"
+        name="name"
         id={record._id}
-        recordItem={record.firstName}
+        recordItem={record.name}
         onFieldChange={onFieldChange}
-      />
-      <EditableField
-        name="lastName"
-        id={record._id}
-        recordItem={record.lastName}
-        onFieldChange={onFieldChange}
-      />
-      <EmailField
-        name="email"
-        id={record._id}
-        errorId ={errorId}
-        recordItem={record.email}
-        onFieldChange={onFieldChange}
-        showError={showError}
-        setErrorId = {setErrorId}
-  
       />
       <EditableField
         name="address"
@@ -54,7 +40,15 @@ const FormRow = ({
         recordItem={record.address}
         onFieldChange={onFieldChange}
       />
-
+      <EmailField
+        name="email"
+        id={record._id}
+        errorId={errorId}
+        recordItem={record.email}
+        onFieldChange={onFieldChange}
+        showError={showError}
+        setErrorId={setErrorId}
+      />
       <CurrencyValidationField
         name="ratePerHour"
         id={record._id}
@@ -70,6 +64,22 @@ const FormRow = ({
         showError={showError}
       />
       <Typography className="row-item"> ${record.total.toFixed(2)}</Typography>
+      {/* <Typography className="row-item">
+        {startDate ? startDate.format('YYYY-MM-DD') : ''}
+      </Typography> */}
+      <DateField
+        recordItem={record.startDate}
+        id={record._id}
+        name="startDate"
+        onFieldChange={onFieldChange}
+      />
+      <DateField
+        recordItem={record.endDate}
+        id={record._id}
+        name="endDate"
+        onFieldChange={onFieldChange}
+      />
+      <Typography className="row-item"> {record.days}</Typography>
       <IconButton aria-label="delete" onClick={() => onOpenDialog(record._id)}>
         <DeleteIcon sx={{ color: 'white' }} />
       </IconButton>
