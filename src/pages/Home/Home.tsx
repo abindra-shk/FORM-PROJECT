@@ -21,7 +21,7 @@ const Home: React.FC = () => {
   }, []);
 
   const addRow = () => {
-    const newId = `temp_${data.length + 1}`; // Generate a temporary ID for new rows
+    const newId = `temp_${data.length + 1}`; 
     const newRow: FormItem = {
       _id: newId,
       firstName: "",
@@ -72,7 +72,7 @@ const Home: React.FC = () => {
         delete payload._id;
         const newId = (data.length + 1).toString();
         response = await axios.post(
-          `http://localhost:8000/api/test/${newId}`,
+          "http://localhost:8000/api/test/",
           payload // updatedRow._id.replace("temp_", "")Replace temporary ID format with the actual ID format
         );
       } else {
