@@ -79,7 +79,7 @@ const FormRow = ({
         name="endDate"
         onFieldChange={onFieldChange}
       />
-      <Typography className="row-item"> {record.days}</Typography>
+      <Typography className="row-item"> {record.days? record.days : 0}</Typography>
       <IconButton aria-label="delete" onClick={() => onOpenDialog(record._id)}>
         <DeleteIcon sx={{ color: 'white' }} />
       </IconButton>

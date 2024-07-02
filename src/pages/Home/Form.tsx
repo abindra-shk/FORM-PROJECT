@@ -84,11 +84,6 @@ const Form = () => {
             updateData(id, { hours: value });
             updateData(id, { total: obj.total });
             break;
-          // case 'startDate':
-          // case 'endDate':
-          //   obj[name] = value;
-          //   obj.days = calculateDays(obj.startDate, obj.endDate);
-          //   break;
           case 'startDate':
           case 'endDate':
             obj[name] = value;
@@ -128,7 +123,9 @@ const Form = () => {
         console.log(err.response.data.message);
         // setError(err.response.data.message);
         console.log('errorId', id);
-        setErrorId(id);
+        if (err.response.data.message) {
+          setErrorId(id);
+        }
       }
     }
   };

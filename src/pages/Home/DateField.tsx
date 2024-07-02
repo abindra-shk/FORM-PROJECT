@@ -17,12 +17,14 @@ const DateField = ({
   name: string;
 }) => {
   const [editable, setEditable] = useState(false);
-  const [dateValue, setDateValue] = useState<Dayjs | null>(recordItem ? dayjs(recordItem) : null);
+  const [dateValue, setDateValue] = useState<Dayjs | null>(
+    recordItem ? dayjs(recordItem) : null
+  );
   const [error, setError] = useState<string | null>(null);
   const datePickerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    setDateValue(recordItem ? dayjs(recordItem) : null);
+    setDateValue(recordItem ? dayjs(recordItem) : dayjs());
   }, [recordItem]);
 
   const onFieldClick = () => {
@@ -36,12 +38,15 @@ const DateField = ({
       setError(null);
       setDateValue(newValue);
       if (onFieldChange) {
+        console.log('here onchange')
         onFieldChange(id, name, newValue ? newValue.format('YYYY-MM-DD') : '');
       }
     }
   };
 
-  const handleBlur: FocusEventHandler<HTMLTextAreaElement | HTMLInputElement> = (event) => {
+  const handleBlur: FocusEventHandler<
+    HTMLTextAreaElement | HTMLInputElement
+  > = (event) => {
     if (
       datePickerRef.current &&
       event.relatedTarget instanceof Node &&

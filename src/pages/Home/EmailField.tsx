@@ -55,7 +55,7 @@ const EmailField = ({
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(newValue)) {
       setError(true);
-      setHelperText('Invalid email format.');
+      // setHelperText('Invalid email format.');
       showError('Invalid email format !!');
     } else {
       setError(false);
