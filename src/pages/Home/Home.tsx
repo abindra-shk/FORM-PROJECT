@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Row from "./Row";
 import styles from "./Home.module.css";
-import axios from "axios";
 import { FormItem } from "../../interface/index";
-import { API_ENDPOINTS } from '../../service/constants';
+import { API_ENDPOINTS } from "../../service/constants";
 import {
   GetRequest,
-  // PostRequest,
-  // DeleteRequest,
-  // PatchRequest,
-} from '../../service/services';
+  PostRequest,
+  DeleteRequest,
+  PatchRequest,
+} from "../../service/services";
 
 const Home: React.FC = () => {
   const [data, setData] = useState<FormItem[]>([]);
@@ -48,24 +47,24 @@ const Home: React.FC = () => {
     setData([...data, newRow]);
   };
 
-  const validatePayload = (updatedRow: FormItem) => {
+  const validatePayload = (record: FormItem) => {
     if (
-      updatedRow.firstName === "" ||
-      updatedRow.lastName === "" ||
-      updatedRow.email === "" ||
-      updatedRow.address === "" ||
-      updatedRow.ratePerHour === 0 ||
-      updatedRow.hours === 0
+      record.firstName === "" ||
+      record.lastName === "" ||
+      record.email === "" ||
+      record.address === "" ||
+      record.ratePerHour === 0 ||
+      record.hours === 0
     ) {
       return false;
     }
     return true;
   };
 
-  const updateCurrentData = (updatedRow: FormItem, updatedData: FormItem) => {
-    if (updatedRow._id?.startsWith("temp_")) {
+  const updateCurrentData = (record: FormItem, updatedData: FormItem) => {
+    if (record._id?.startsWith("temp_")) {
       const oldData = [...data];
-      oldData[oldData.length - 1] = updatedData; // Replace the last added temp row with the actual data
+      oldData[oldData.length - 1] = updatedData;
       setData(oldData);
     } else {
       setData(
@@ -74,30 +73,30 @@ const Home: React.FC = () => {
     }
   };
 
-  const updateRow = async (updatedRow: FormItem) => {
+  const updateRow = async (record: FormItem) => {
+    console.warn("updateRow===>", record);
     try {
-      if (!validatePayload(updatedRow)) {
-        console.warn("Validation failed for row", updatedRow);
+      if (!validatePayload(record)) {
+        console.warn("Validation failed for row", record);
         return;
       }
+      //  const { _id, ...payload } = record;
+      const payload: FormItem = { ...record };
+      const { _id } = record;
 
-      let payload = { ...updatedRow };
       let response = null;
-      if (updatedRow._id?.startsWith("temp_")) {
-        delete payload._id;
-        response = await axios.post(
-          "http://localhost:8000/api/test/",
-          payload
-        );
+      if (_id?.startsWith("temp_")) {
+        response = await PostRequest(`${API_ENDPOINTS.TEST}`, payload);
       } else {
-        response = await axios.patch(
-          `http://localhost:8000/api/test/${updatedRow._id}`,
-          payload
-        );
+        delete payload.createdAt;
+        delete payload.updatedAt;
+        delete payload._id;
+        delete payload.__v;
+        response = await PatchRequest(`${API_ENDPOINTS.TEST}/${_id}`, payload);
       }
 
       const updatedData = response.data;
-      updateCurrentData(updatedRow, updatedData);
+      updateCurrentData(record, updatedData);
       console.log("Row updated:", response.data);
     } catch (error) {
       console.error("Error updating row:", error);
@@ -106,7 +105,7 @@ const Home: React.FC = () => {
 
   const deleteRow = async (id?: string) => {
     try {
-      await axios.delete(`http://localhost:8000/api/test/${id}`);
+      await DeleteRequest(`${API_ENDPOINTS.TEST}/${id}`);
       const newData = data.filter((item) => item._id !== id);
       setData(newData);
     } catch (error) {
@@ -142,7 +141,7 @@ const Home: React.FC = () => {
               />
             ))
           ) : (
-            <div>No data available</div>
+            <div>No Data Available</div>
           )}
           <div className={styles.tableRow}>
             <div className={styles.tableCell} style={{ textAlign: "center" }}>

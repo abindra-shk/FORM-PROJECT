@@ -1,10 +1,9 @@
-
-
 import React, { useState, useEffect } from "react";
 import styles from "./Home.module.css";
-import Items from "./Items";
+import Items from "./EditableItem";
+import EditableEmailItems from "./EditableEmailItem";
 import ConfirmDialog from "./ConfirmDialog";
-import { FormItem } from "../../interface/index"; 
+import { FormItem } from "../../interface/index";
 
 interface RowProps {
   row: FormItem;
@@ -24,7 +23,9 @@ const Row: React.FC<RowProps> = ({ row, index, updateRow, deleteRow }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target as HTMLInputElement;
-    const updatedValue = ["ratePerHour", "hours"].includes(name) ? +value : value;
+    const updatedValue = ["ratePerHour", "hours"].includes(name)
+      ? +value
+      : value;
     const updatedRow = { ...rowData, [name]: updatedValue };
     if (name === "ratePerHour" || name === "hours") {
       updatedRow.total = updatedRow.ratePerHour * updatedRow.hours;
@@ -79,7 +80,7 @@ const Row: React.FC<RowProps> = ({ row, index, updateRow, deleteRow }) => {
         handleBlur={handleBlur}
         setEditingField={setEditingField}
       />
-      <Items
+      <EditableEmailItems
         name="email"
         value={rowData.email}
         isEditing={editingField === "email"}
@@ -129,5 +130,3 @@ const Row: React.FC<RowProps> = ({ row, index, updateRow, deleteRow }) => {
 };
 
 export default Row;
-
-                  

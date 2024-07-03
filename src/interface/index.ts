@@ -8,4 +8,7 @@ export interface FormItem {
   ratePerHour: number;
   hours: number;
   total: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  __v?: string;
 }
