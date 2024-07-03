@@ -12,9 +12,6 @@ const StaticHeading = () => {
       <Typography className="row-item" variant="h6">
         Address
       </Typography>
-      {/* <Typography className="row-item" variant="h6">
-        Last Name
-      </Typography> */}
       <Typography className="row-item" variant="h6">
         Email
       </Typography>
@@ -27,12 +24,6 @@ const StaticHeading = () => {
       <Typography className="row-item" variant="h6">
         Total
       </Typography>
-      {/* <Typography className="row-item" variant="h6">
-        Start Date
-      </Typography>
-      <Typography className="row-item" variant="h6">
-        End Date
-      </Typography> */}
       <Typography className="row-item" style={{marginLeft:'32px'}}variant="h6">
         Date Range Picker
       </Typography>

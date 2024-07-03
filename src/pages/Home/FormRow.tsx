@@ -5,7 +5,6 @@ import EditableField from './EditableField';
 import NumberField from './NumberField';
 import CurrencyValidationField from './CurrencyField';
 import EmailField from './EmailField';
-// import DateField from './DateField';
 import DateRangeField from './DateRangeField';
 
 const FormRow = ({
@@ -65,21 +64,6 @@ const FormRow = ({
         showError={showError}
       />
       <Typography className="row-item"> ${record.total.toFixed(2)}</Typography>
-      {/* <Typography className="row-item">
-        {startDate ? startDate.format('YYYY-MM-DD') : ''}
-      </Typography> */}
-      {/* <DateField
-        recordItem={record.startDate}
-        id={record._id}
-        name="startDate"
-        onFieldChange={onFieldChange}
-      />
-      <DateField
-        recordItem={record.endDate}
-        id={record._id}
-        name="endDate"
-        onFieldChange={onFieldChange}
-      /> */}
       <DateRangeField
         startDate={record.startDate}
         endDate={record.endDate}
