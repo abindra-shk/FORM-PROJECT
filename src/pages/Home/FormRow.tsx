@@ -5,7 +5,8 @@ import EditableField from './EditableField';
 import NumberField from './NumberField';
 import CurrencyValidationField from './CurrencyField';
 import EmailField from './EmailField';
-import DateField from './DateField';
+// import DateField from './DateField';
+import DateRangeField from './DateRangeField';
 
 const FormRow = ({
   record,
@@ -18,7 +19,7 @@ const FormRow = ({
 }: {
   record: FormItem;
   index: number;
-  onFieldChange: (id: string, name: string, value: string) => void;
+  onFieldChange: (id: string, name: string, value: any) => void;
   onOpenDialog: (id: string) => void;
   showError: (message: string) => void;
   errorId: string | null;
@@ -67,7 +68,7 @@ const FormRow = ({
       {/* <Typography className="row-item">
         {startDate ? startDate.format('YYYY-MM-DD') : ''}
       </Typography> */}
-      <DateField
+      {/* <DateField
         recordItem={record.startDate}
         id={record._id}
         name="startDate"
@@ -77,6 +78,13 @@ const FormRow = ({
         recordItem={record.endDate}
         id={record._id}
         name="endDate"
+        onFieldChange={onFieldChange}
+      /> */}
+      <DateRangeField
+        startDate={record.startDate}
+        endDate={record.endDate}
+        id={record._id}
+        name="dateRange"
         onFieldChange={onFieldChange}
       />
       <Typography className="row-item"> {record.days? record.days : 0}</Typography>

@@ -27,11 +27,14 @@ const StaticHeading = () => {
       <Typography className="row-item" variant="h6">
         Total
       </Typography>
-      <Typography className="row-item" variant="h6">
+      {/* <Typography className="row-item" variant="h6">
         Start Date
       </Typography>
       <Typography className="row-item" variant="h6">
         End Date
+      </Typography> */}
+      <Typography className="row-item" style={{marginLeft:'32px'}}variant="h6">
+        Date Range Picker
       </Typography>
       <Typography className="row-item" variant="h6">
         Days

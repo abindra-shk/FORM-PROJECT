@@ -106,6 +106,16 @@ const Form = () => {
               updateData(id, { days: obj.days });
             }
             break;
+          case 'dateRange':
+            obj.startDate = value.startDate;
+            obj.endDate = value.endDate;
+            obj.days = value.days;
+            updateData(id, {
+              startDate: value.startDate,
+              endDate: value.endDate,
+              days: value.days,
+            });
+            break;
           default:
             break;
         }

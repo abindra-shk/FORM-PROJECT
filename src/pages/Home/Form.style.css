@@ -7,7 +7,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 50px 100px 120px 200px 150px 90px 90px 150px 150px 80px 95px;
+  grid-template-columns: 50px 100px 120px 200px 150px 90px 100px 320px 80px 95px;
   border-bottom: 1px solid grey;
 }
 
@@ -51,4 +51,13 @@
   opacity: 1;
 }
 
+.date-range{
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+}
 
+.datewidth{
+  width:150px;
+  text-align: center;
+}

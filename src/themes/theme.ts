@@ -22,6 +22,7 @@ const theme = createTheme({
       textTransform: 'uppercase',
       color: 'white',
       display: 'flex',
+      textAlign:'center',
     },
   },
   components: {
