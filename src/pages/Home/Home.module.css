@@ -23,7 +23,7 @@
 
 .tableRow {
   display: grid;
-  grid-template-columns: 80px 100px 100px 200px 100px 100px 100px 80px 80px;
+  grid-template-columns: 80px 100px 100px 200px 100px 100px 100px  100px 80px;
   border-bottom: 1px solid #ddd;
 }
 

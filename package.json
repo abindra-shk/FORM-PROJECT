@@ -16,9 +16,12 @@
     "@material-ui/icons": "^4.11.3",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@types/react-input-mask": "^3.0.5",
     "axios": "^1.7.2",
     "json-server": "^1.0.0-beta.1",
     "preact": "^10.19.6",
+    "react-input-mask": "^2.0.4",
+    "react-number-format": "^5.4.0",
     "zustand": "^4.5.3"
   },
   "devDependencies": {

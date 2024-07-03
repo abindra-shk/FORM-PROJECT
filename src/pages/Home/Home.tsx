@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Row from "./Row";
+import Row from "./Row/Row";
 import styles from "./Home.module.css";
 import { FormItem } from "../../interface/index";
 import { API_ENDPOINTS } from "../../service/constants";
+// import CurrentField from "./CurrencyField";
 import {
   GetRequest,
   PostRequest,
@@ -12,6 +13,16 @@ import {
 
 const Home: React.FC = () => {
   const [data, setData] = useState<FormItem[]>([]);
+  // //for currency
+  //   const [fields, setFields] = useState({
+  //     ratePerHour: 50,
+  //     hours: 8,
+  //     total: 400
+  //   });
+
+  //   const handleFieldUpdate = (updatedField: { ratePerHour: number; hours: number; total: number }) => {
+  //     setFields(updatedField);
+  //   };
 
   const fetchData = async () => {
     try {
@@ -24,7 +35,7 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error("Error fetching data", error);
-      setData([]); // Ensure data is an array even if there's an error
+      setData([]);
     }
   };
 
@@ -123,7 +134,8 @@ const Home: React.FC = () => {
             <div className={styles.tableHeaderCell}>Last Name</div>
             <div className={styles.tableHeaderCell}>Email</div>
             <div className={styles.tableHeaderCell}>Address</div>
-            <div className={styles.tableHeaderCell}>Rate per Hour</div>
+            {/* <div className={styles.tableHeaderCell}>Rate per Hour</div> */}
+            <div className={styles.tableHeaderCell}>Currency</div>
             <div className={styles.tableHeaderCell}>Hours</div>
             <div className={styles.tableHeaderCell}>Total</div>
             <div className={styles.tableHeaderCell}>Action</div>
