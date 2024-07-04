@@ -1,9 +1,15 @@
-// ConfirmDialog.tsx
 import React from "react";
-import styles from "./Home.module.css";
+// import styles from "./Home.module.css";
+import {
+  DialogOverlay,
+  Dialog,
+  DialogActions,
+  Button
+} from "./Row/Home.style";
 
 interface ConfirmDialogProps {
   open: boolean;
+  // onClick: () => void;
   handleClose: () => void;
   handleConfirm: () => void;
 }
@@ -16,20 +22,16 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   if (!open) return null;
 
   return (
-    <div className={styles.dialogOverlay}>
-      <div className={styles.dialog}>
+    <DialogOverlay>
+      <Dialog>
         <h2>Confirm Delete</h2>
         <p>Are you sure you want to delete this row?</p>
-        <div className={styles.dialogActions}>
-          <button onClick={handleClose} className={styles.cancelButton}>
-            Cancel
-          </button>
-          <button onClick={handleConfirm} className={styles.confirmButton}>
-            Confirm
-          </button>
-        </div>
-      </div>
-    </div>
+        <DialogActions>
+          <Button color="danger" onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleConfirm}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+    </DialogOverlay>
   );
 };
 

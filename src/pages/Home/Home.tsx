@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Row from "./Row/Row";
-import styles from "./Home.module.css";
+// import styles from "./Home.module.css";
 import { FormItem } from "../../interface/index";
 import { API_ENDPOINTS } from "../../service/constants";
 // import CurrentField from "./CurrencyField";
@@ -10,6 +10,8 @@ import {
   DeleteRequest,
   PatchRequest,
 } from "../../service/services";
+
+import   { TablesContainer,AddButton, Tables, TableHead, TableRow, CurrencyGrid, TableHeaderCell, TableCell,  Error, DialogOverlay, Dialog, DialogActions,Button, Field }  from "./Row/Home.style";
 
 const Home: React.FC = () => {
   const [data, setData] = useState<FormItem[]>([]);
@@ -91,7 +93,7 @@ const Home: React.FC = () => {
         console.warn("Validation failed for row", record);
         return;
       }
-      //  const { _id, ...payload } = record;
+
       const payload: FormItem = { ...record };
       const { _id } = record;
 
@@ -125,23 +127,24 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className={styles.tableContainer}>
-      <div className={styles.table}>
-        <div className={styles.tableHead}>
-          <div className={styles.tableRow}>
-            <div className={styles.tableHeaderCell}>ID</div>
-            <div className={styles.tableHeaderCell}>First Name</div>
-            <div className={styles.tableHeaderCell}>Last Name</div>
-            <div className={styles.tableHeaderCell}>Email</div>
-            <div className={styles.tableHeaderCell}>Address</div>
-            {/* <div className={styles.tableHeaderCell}>Rate per Hour</div> */}
-            <div className={styles.tableHeaderCell}>Currency</div>
-            <div className={styles.tableHeaderCell}>Hours</div>
-            <div className={styles.tableHeaderCell}>Total</div>
-            <div className={styles.tableHeaderCell}>Action</div>
-          </div>
-        </div>
-        <div className={styles.tableBody}>
+    <TablesContainer>
+      <Tables>
+        <TableHead>
+          <TableRow>
+            <TableHeaderCell>ID</TableHeaderCell>
+            <TableHeaderCell>First Name</TableHeaderCell>
+            <TableHeaderCell>Last Name</TableHeaderCell>
+            <TableHeaderCell>Email</TableHeaderCell>
+            <TableHeaderCell>Address</TableHeaderCell>
+            <CurrencyGrid>
+              <TableHeaderCell>Currency</TableHeaderCell>
+              <TableHeaderCell>Hours</TableHeaderCell>
+              <TableHeaderCell>Total</TableHeaderCell>
+            </CurrencyGrid>
+            <TableHeaderCell>Action</TableHeaderCell>
+          </TableRow>
+        </TableHead>
+        <div>
           {data.length > 0 ? (
             data.map((row, index) => (
               <Row
@@ -155,16 +158,14 @@ const Home: React.FC = () => {
           ) : (
             <div>No Data Available</div>
           )}
-          <div className={styles.tableRow}>
-            <div className={styles.tableCell} style={{ textAlign: "center" }}>
-              <button onClick={addRow} className={styles.addButton}>
-                +
-              </button>
-            </div>
-          </div>
+          <TableRow>
+            <TableCell style={{ textAlign: "center" }}>
+              <AddButton onClick={addRow}>+</AddButton>
+            </TableCell>
+          </TableRow>
         </div>
-      </div>
-    </div>
+      </Tables>
+    </TablesContainer>
   );
 };
 
