@@ -1,9 +1,13 @@
-import { Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useState, useEffect, useRef, FocusEventHandler } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { DatePicker } from '@mui/x-date-pickers';
+import {
+  DateRangeContainer,
+  DateWidth,
+  RowItem,
+  StyledDatePicker,
+} from '../../pages/Home/Form/Form.style';
 
 const DateRangeField = ({
   startDate,
@@ -109,8 +113,8 @@ const DateRangeField = ({
     <div ref={datePickerRef}>
       {editable ? (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <div className="date-range">
-            <DatePicker
+          <DateRangeContainer>
+            <StyledDatePicker
               value={startDateValue}
               onChange={handleStartDateChange}
               onClose={handleClose}
@@ -131,7 +135,7 @@ const DateRangeField = ({
               }}
             />
             <span>-</span>
-            <DatePicker
+            <StyledDatePicker
               value={endDateValue}
               onChange={handleEndDateChange}
               onClose={handleClose}
@@ -151,21 +155,20 @@ const DateRangeField = ({
                 },
               }}
             />
-          </div>
+          </DateRangeContainer>
         </LocalizationProvider>
       ) : (
-        <Typography className="row-item" onClick={onFieldClick}>
-          <div className="date-range">
-            {' '}
-            <div className="datewidth">
+        <RowItem onClick={onFieldClick}>
+          <DateRangeContainer>
+            <DateWidth>
               {startDateValue ? dayjs(startDateValue).format('YYYY-MM-DD') : ''}
-            </div>
+            </DateWidth>
             <span>-</span>
-            <div className="datewidth">
+            <DateWidth>
               {endDateValue ? dayjs(endDateValue).format('YYYY-MM-DD') : ''}
-            </div>
-          </div>
-        </Typography>
+            </DateWidth>
+          </DateRangeContainer>
+        </RowItem>
       )}
     </div>
   );

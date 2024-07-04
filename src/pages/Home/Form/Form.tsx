@@ -1,28 +1,21 @@
 import { useEffect, useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
-import './Form.style.css';
+import './Form.style';
 import FormRow from './FormRow';
-import { FormItem } from '../../interface/interface';
-import {
-  Box,
-  Button,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
+import { FormItem } from '../../../interface/interface';
+import { Button, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import StaticHeading from './StaticHeading';
+import FormHeading from './FormHeading';
 import {
   GetRequest,
   PostRequest,
   DeleteRequest,
   PatchRequest,
-} from '../../utils/services';
-import { API_ENDPOINTS } from '../../utils/constant';
+} from '../../../utils/services';
+import { API_ENDPOINTS } from '../../../utils/constant';
 import dayjs, { Dayjs } from 'dayjs';
+import { ErrorMessage, StyledForm } from './Form.style';
+import ConfirmDialog from './ConfirmDialog';
 
 const Form = () => {
   const [formArray, setFormArray] = useState<FormItem[]>([]);
@@ -186,15 +179,15 @@ const Form = () => {
   };
 
   return (
-    <Box className="form">
-      <div className={`error-message ${error ? 'visible' : ''}`}>
+    <StyledForm>
+      <ErrorMessage visible={!!error}>
         <Typography variant="h6" color="error">
           <ErrorIcon sx={{ marginRight: 1 }} />
           {error}
         </Typography>
-      </div>
+      </ErrorMessage>
 
-      <StaticHeading />
+      <FormHeading />
       {formArray.map((record: FormItem, index: number) => (
         <FormRow
           index={index}
@@ -210,28 +203,12 @@ const Form = () => {
       <Button variant="contained" color="secondary" onClick={handleAdd}>
         <AddIcon />
       </Button>
-      <Dialog
+      <ConfirmDialog
         open={dialogOpen}
         onClose={handleCloseDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title" sx={{ color: 'black' }}>
-          {'Confirm Delete'}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this record?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={() => handleDelete(recordToDelete!)} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+        onDelete={() => handleDelete(recordToDelete!)}
+      />
+    </StyledForm>
   );
 };
 

@@ -1,5 +1,5 @@
-import { TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { RowItem, StyledTextField } from '../../pages/Home/Form/Form.style';
 
 const NumberField = ({
   recordItem,
@@ -40,7 +40,7 @@ const NumberField = ({
   };
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
-  
+
     // Check if there are more than two digits after the decimal point
     const parts = newValue.split('.');
     if (parts.length === 2 && parts[1].length > 2) {
@@ -48,34 +48,33 @@ const NumberField = ({
       showError('Only two digits after the decimal point is allowed !!');
       return;
     }
-  
+
     // Regex for decimal numbers with up to two digits after the decimal point
     const decimalRegex = /^\d*(\.\d{0,2})?$/;
-  
+
     setEditable(true);
-  
+
     if (!decimalRegex.test(newValue)) {
       setError(true);
       showError('Invalid number format !!');
       return;
     }
-  
+
     if (name === 'hours' && Number(newValue) > 12) {
       setError(true);
       showError('Only 12 hours of work can be recorded !!');
       return;
     }
-  
+
     setError(false);
     setValue(newValue);
     showError('');
   };
-  
+
   return (
     <div>
       {editable || !value || value === '' ? (
-        <TextField
-          className="row-item"
+        <StyledTextField
           variant="outlined"
           size="small"
           value={value}
@@ -86,9 +85,7 @@ const NumberField = ({
           inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} // Optional: restricts input to numeric only (excluding e and -)
         />
       ) : (
-        <Typography className="row-item" onClick={onFieldClick}>
-          {value}
-        </Typography>
+        <RowItem onClick={onFieldClick}>{value}</RowItem>
       )}
     </div>
   );

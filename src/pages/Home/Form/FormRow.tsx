@@ -1,11 +1,12 @@
-import { Box, IconButton, Typography } from '@mui/material';
+import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { FormItem } from '../../interface/interface';
-import EditableField from './EditableField';
-import NumberField from './NumberField';
-import CurrencyValidationField from './CurrencyField';
-import EmailField from './EmailField';
-import DateRangeField from './DateRangeField';
+import { FormItem } from '../../../interface/interface';
+import EditableField from '../../../components/Form/EditableField';
+import NumberField from '../../../components/Form/NumberField';
+import CurrencyField from '../../../components/Form/CurrencyField';
+import EmailField from '../../../components/Form/EmailField';
+import DateRangeField from '../../../components/Form/DateRangeField';
+import { Row, RowItem } from './Form.style';
 
 const FormRow = ({
   record,
@@ -24,10 +25,9 @@ const FormRow = ({
   errorId: string | null;
   setErrorId: (id: string | null) => void;
 }) => {
-
   return (
-    <Box className="row">
-      <Typography className="row-item">{index + 1}</Typography>
+    <Row>
+      <RowItem>{index + 1}</RowItem>
       <EditableField
         name="name"
         id={record._id}
@@ -49,7 +49,7 @@ const FormRow = ({
         showError={showError}
         setErrorId={setErrorId}
       />
-      <CurrencyValidationField
+      <CurrencyField
         name="ratePerHour"
         id={record._id}
         recordItem={record.ratePerHour.toString()}
@@ -63,7 +63,7 @@ const FormRow = ({
         onFieldChange={onFieldChange}
         showError={showError}
       />
-      <Typography className="row-item"> ${record.total.toFixed(2)}</Typography>
+      <RowItem> ${record.total.toFixed(2)}</RowItem>
       <DateRangeField
         startDate={record.startDate}
         endDate={record.endDate}
@@ -71,11 +71,11 @@ const FormRow = ({
         name="dateRange"
         onFieldChange={onFieldChange}
       />
-      <Typography className="row-item"> {record.days? record.days : 0}</Typography>
+      <RowItem> {record.days ? record.days : 0}</RowItem>
       <IconButton aria-label="delete" onClick={() => onOpenDialog(record._id)}>
         <DeleteIcon sx={{ color: 'white' }} />
       </IconButton>
-    </Box>
+    </Row>
   );
 };
 

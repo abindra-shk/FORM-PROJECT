@@ -1,7 +1,7 @@
-import Form from './Form';
+import Form from './Form/Form';
 
-const Home =() =>{
-    return <Form />
-}
+const Home = () => {
+  return <Form />;
+};
 
 export default Home;

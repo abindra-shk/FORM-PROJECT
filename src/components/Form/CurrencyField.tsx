@@ -1,5 +1,5 @@
-import { TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { RowItem, StyledTextField } from '../../pages/Home/Form/Form.style';
 
 const CurrencyField = ({
   recordItem,
@@ -75,8 +75,7 @@ const CurrencyField = ({
   return (
     <div>
       {editable || !value || value === '' ? (
-        <TextField
-          className="row-item"
+        <StyledTextField
           variant="outlined"
           size="small"
           value={value ? `$${value}` : ''}
@@ -86,9 +85,7 @@ const CurrencyField = ({
           error={error}
         />
       ) : (
-        <Typography className="row-item" onClick={onFieldClick}>
-          {value ? `$${value}` : ''}
-        </Typography>
+        <RowItem onClick={onFieldClick}>{value ? `$${value}` : ''}</RowItem>
       )}
     </div>
   );

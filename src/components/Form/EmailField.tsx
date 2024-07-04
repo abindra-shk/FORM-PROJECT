@@ -1,5 +1,6 @@
-import { TextField, Typography, Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { RowItem, StyledTextField } from '../../pages/Home/Form/Form.style';
 
 const EmailField = ({
   recordItem,
@@ -70,8 +71,7 @@ const EmailField = ({
   return (
     <Box>
       {editable || !value || value === '' ? (
-        <TextField
-          className="row-item"
+        <StyledTextField
           variant="outlined"
           size="small"
           value={value}
@@ -83,12 +83,9 @@ const EmailField = ({
         />
       ) : (
         <>
-          <Typography
-            className={`row-item ${error ? 'error-border' : ''}`}
-            onClick={onFieldClick}
-          >
+          <RowItem error={error} onClick={onFieldClick}>
             {value}
-          </Typography>
+          </RowItem>
           {error && (
             <Typography variant="caption" color="error">
               {helperText}

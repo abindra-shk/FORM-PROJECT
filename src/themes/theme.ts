@@ -14,17 +14,6 @@ const theme = createTheme({
       main: red.A400,
     },
   },
-  typography: {
-    fontFamily: ['Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'].join(','),
-    h6: {
-      fontSize: '1rem',
-      fontWeight: 700,
-      textTransform: 'uppercase',
-      color: 'white',
-      display: 'flex',
-      textAlign:'center',
-    },
-  },
   components: {
     MuiTextField: {
       styleOverrides: {

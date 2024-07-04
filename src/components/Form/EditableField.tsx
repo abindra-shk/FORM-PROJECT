@@ -1,5 +1,5 @@
-import { TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { RowItem, StyledTextField } from '../../pages/Home/Form/Form.style';
 
 const EditableField = ({
   recordItem,
@@ -43,8 +43,7 @@ const EditableField = ({
   return (
     <div>
       {editable || !value || value === '' ? (
-        <TextField
-          className="row-item"
+        <StyledTextField
           variant="outlined"
           size="small"
           value={value}
@@ -53,9 +52,7 @@ const EditableField = ({
           onChange={handleChange}
         />
       ) : (
-        <Typography className="row-item" onClick={onFieldClick}>
-          {value}
-        </Typography>
+        <RowItem onClick={onFieldClick}>{value}</RowItem>
       )}
     </div>
   );
