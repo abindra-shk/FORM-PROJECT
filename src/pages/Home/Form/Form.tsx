@@ -16,6 +16,7 @@ import { API_ENDPOINTS } from '../../../utils/constant';
 import dayjs, { Dayjs } from 'dayjs';
 import { ErrorMessage, StyledForm } from './Form.style';
 import ConfirmDialog from './ConfirmDialog';
+import AutoCompleteSearch from './AutoCompleteSearch';
 
 const Form = () => {
   const [formArray, setFormArray] = useState<FormItem[]>([]);
@@ -179,36 +180,40 @@ const Form = () => {
   };
 
   return (
-    <StyledForm>
-      <ErrorMessage visible={!!error}>
-        <Typography variant="h6" color="error">
-          <ErrorIcon sx={{ marginRight: 1 }} />
-          {error}
-        </Typography>
-      </ErrorMessage>
+    <>
+      <AutoCompleteSearch formArray={formArray} />
+      <StyledForm>
+        <ErrorMessage visible={!!error}>
+          <Typography variant="h6" color="error">
+            <ErrorIcon sx={{ marginRight: 1 }} />
+            {error}
+          </Typography>
+        </ErrorMessage>
 
-      <FormHeading />
-      {formArray.map((record: FormItem, index: number) => (
-        <FormRow
-          index={index}
-          key={record._id}
-          record={record}
-          errorId={errorId}
-          setErrorId={setErrorId}
-          onFieldChange={handleFieldChange}
-          onOpenDialog={handleOpenDialog}
-          showError={showError}
+        <FormHeading />
+
+        {formArray.map((record: FormItem, index: number) => (
+          <FormRow
+            index={index}
+            key={record._id}
+            record={record}
+            errorId={errorId}
+            setErrorId={setErrorId}
+            onFieldChange={handleFieldChange}
+            onOpenDialog={handleOpenDialog}
+            showError={showError}
+          />
+        ))}
+        <Button variant="contained" color="secondary" onClick={handleAdd}>
+          <AddIcon />
+        </Button>
+        <ConfirmDialog
+          open={dialogOpen}
+          onClose={handleCloseDialog}
+          onDelete={() => handleDelete(recordToDelete!)}
         />
-      ))}
-      <Button variant="contained" color="secondary" onClick={handleAdd}>
-        <AddIcon />
-      </Button>
-      <ConfirmDialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
-        onDelete={() => handleDelete(recordToDelete!)}
-      />
-    </StyledForm>
+      </StyledForm>
+    </>
   );
 };
 
