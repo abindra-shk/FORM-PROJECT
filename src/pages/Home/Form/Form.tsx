@@ -11,14 +11,18 @@ import {
   PostRequest,
   DeleteRequest,
   PatchRequest,
-} from '../../../utils/services';
+} from '../../../services/services';
 import { API_ENDPOINTS } from '../../../utils/constant';
 import dayjs, { Dayjs } from 'dayjs';
 import { ErrorMessage, StyledForm } from './Form.style';
 import ConfirmDialog from './ConfirmDialog';
 import AutoCompleteSearch from './AutoCompleteSearch';
+import { setNetworkInfo } from '../../../services/networkSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Form = () => {
+  const dispatch = useDispatch();
+  const networkInfo = useSelector((state: any) => state.network);
   const [formArray, setFormArray] = useState<FormItem[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
@@ -27,7 +31,9 @@ const Form = () => {
 
   const displayAllUsers = async (): Promise<void> => {
     try {
+      dispatch(setNetworkInfo('fetching'));
       const res = await GetRequest(API_ENDPOINTS.TEST);
+      // dispatch(clearNetworkInfo());
       setFormArray(res.data.data);
       console.log('users', res);
     } catch (err) {
@@ -181,6 +187,7 @@ const Form = () => {
 
   return (
     <>
+      <div>{networkInfo?.info}</div>
       <AutoCompleteSearch formArray={formArray} />
       <StyledForm>
         <ErrorMessage visible={!!error}>

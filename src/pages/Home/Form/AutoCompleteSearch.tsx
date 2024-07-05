@@ -8,28 +8,16 @@ interface AutoCompleteSearchProps {
 }
 
 const AutoCompleteSearch: React.FC<AutoCompleteSearchProps> = ({ formArray }) => {
-  const [options, setOptions] = React.useState<{ label: string; name: string; ratePerHour: number }[]>([]);
+  const [options, setOptions] = React.useState<FormItem[]>(formArray);
 
   React.useEffect(() => {
-    const formattedOptions = formArray
-      .map((item) => ({
-        label: `${item.name} (${item.ratePerHour} $/hr)`,
-        name: item.name,
-        ratePerHour: item.ratePerHour,
-      }))
-      .sort((a, b) => b.ratePerHour - a.ratePerHour);
-    setOptions(formattedOptions);
+    setOptions(formArray);
   }, [formArray]);
 
   const handleInputChange = (event: React.SyntheticEvent, value: string) => {
     event.preventDefault()
     const filteredOptions = formArray
       .filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
-      .map((item) => ({
-        label: `${item.name} (${item.ratePerHour} $/hr)`,
-        name: item.name,
-        ratePerHour: item.ratePerHour,
-      }))
       .sort((a, b) => b.ratePerHour - a.ratePerHour);
 
     setOptions(filteredOptions);
@@ -40,10 +28,15 @@ const AutoCompleteSearch: React.FC<AutoCompleteSearchProps> = ({ formArray }) =>
       disablePortal
       id="combo-box-demo"
       options={options}
-      getOptionLabel={(option) => option.label}
       sx={{ width: 300 }}
-      onInputChange={(_, value) => handleInputChange(_, value)}
-      renderInput={(params) => <TextField {...params} />}
+      onInputChange={(event, value) => handleInputChange(event, value)}
+      renderOption={(props, option) => (
+        <li {...props}>
+          {option.name} (
+          <span style={{ color: 'green' }}>{option.ratePerHour} $/hr</span> )
+        </li>
+      )}
+      renderInput={(params) => <TextField {...params} label="Search..." />}
     />
   );
 };
