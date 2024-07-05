@@ -17,7 +17,10 @@ import dayjs, { Dayjs } from 'dayjs';
 import { ErrorMessage, StyledForm } from './Form.style';
 import ConfirmDialog from './ConfirmDialog';
 import AutoCompleteSearch from './AutoCompleteSearch';
-import { setNetworkInfo } from '../../../services/networkSlice';
+import {
+  setNetworkInfo,
+  clearNetworkInfo,
+} from '../../../services/networkSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Form = () => {
@@ -33,7 +36,7 @@ const Form = () => {
     try {
       dispatch(setNetworkInfo('fetching'));
       const res = await GetRequest(API_ENDPOINTS.TEST);
-      // dispatch(clearNetworkInfo());
+      dispatch(clearNetworkInfo());
       setFormArray(res.data.data);
       console.log('users', res);
     } catch (err) {

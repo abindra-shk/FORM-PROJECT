@@ -19,7 +19,8 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiInputBase-root.MuiOutlinedInput-root': {
-            height: '42px', // Set the height directly here
+            height: '42px',
+            color:'white', // Set the height directly here
           },
           '& .MuiInputBase-input': {
             color: 'white', // text color
@@ -72,6 +73,13 @@ const theme = createTheme({
               backgroundColor: grey[700],
             },
           },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: 'white', // Set the label color to white
         },
       },
     },

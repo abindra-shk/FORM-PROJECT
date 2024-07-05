@@ -1,13 +1,15 @@
 // import AddTodo from '../../components/Todo/AddTodo';
 // import Todos from '../../components/Todo/Todos';
-import Form from './Form/Form';
+import LoginForm from '../Auth/Login';
+// import Form from './Form/Form';
 
 const Home = () => {
   return (
     <>
-      <Form />
+      {/* <Form /> */}
       {/* <AddTodo />
       <Todos /> */}
+      <LoginForm />
     </>
   );
 };
