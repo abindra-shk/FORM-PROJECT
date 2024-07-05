@@ -28,6 +28,7 @@ const LoginForm = () => {
     try {
       const response = await PostRequest(`${API_ENDPOINTS.ACCOUNT}/login`, formValues);
       const { accessToken, data } = response.data;
+      localStorage.setItem('accessToken',accessToken);
       console.log('Login successful', response.data);
       dispatch(setAuthInfo({ accessToken, userInfo: data }));
       navigate('/form'); // Navigate to the form component on submit

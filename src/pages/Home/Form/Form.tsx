@@ -26,6 +26,8 @@ import { useDispatch, useSelector } from 'react-redux';
 const Form = () => {
   const dispatch = useDispatch();
   const networkInfo = useSelector((state: any) => state.network);
+  const authInfo = useSelector((state: any) => state.auth);
+
   const [formArray, setFormArray] = useState<FormItem[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [recordToDelete, setRecordToDelete] = useState<string | null>(null);
@@ -191,6 +193,7 @@ const Form = () => {
   return (
     <>
       <div>{networkInfo?.info}</div>
+      <div>Welcome {authInfo?.userInfo.userName}</div>
       <AutoCompleteSearch formArray={formArray} />
       <StyledForm>
         <ErrorMessage visible={!!error}>
