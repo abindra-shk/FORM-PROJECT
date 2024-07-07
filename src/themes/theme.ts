@@ -19,7 +19,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiInputBase-root.MuiOutlinedInput-root': {
-            height: '42px',
+            // height: '42px',
             color:'white', // Set the height directly here
           },
           '& .MuiInputBase-input': {
