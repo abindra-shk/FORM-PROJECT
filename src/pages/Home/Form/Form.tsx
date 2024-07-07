@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorIcon from "@mui/icons-material/Error";
 import "./Form.style";
 import FormRow from "./FormRow";
@@ -174,6 +174,19 @@ const Form = () => {
     }
   };
 
+  const handleAddRecord = async (username: string) => {
+    try {
+      const res = await PostRequest(API_ENDPOINTS.TEST, {
+        name: username,
+        ratePerHour: 100, // default rate per hour
+      });
+      setFormArray([...formArray, res.data.data]);
+      setFilteredFormArray([...formArray, res.data.data]);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleOpenDialog = (id: string) => {
     setRecordToDelete(id);
     setDialogOpen(true);
@@ -198,7 +211,11 @@ const Form = () => {
 
   return (
     <>
-      <AutoCompleteSearch formArray={formArray} onInputChange={handleSearchInputChange} />
+      <AutoCompleteSearch
+        formArray={formArray}
+        onInputChange={handleSearchInputChange}
+        onAddRecord={handleAddRecord}
+      />
       <StyledForm>
         <ErrorMessage visible={!!error}>
           <Typography variant="h6" color="error">
