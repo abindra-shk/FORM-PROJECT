@@ -78,7 +78,9 @@ const LoginForm = () => {
             value={formik.values.email}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
-            margin="normal"
+            style={{
+              marginBottom: '16px',
+            }}
           />
           <TextField
             fullWidth
@@ -91,7 +93,9 @@ const LoginForm = () => {
             value={formik.values.password}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
-            margin="normal"
+            style={{
+              marginBottom: '16px',
+            }}
           />
           {generalError && (
             <Typography variant="body2" color="error" sx={{ mt: 2 }}>
