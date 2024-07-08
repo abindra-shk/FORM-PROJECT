@@ -5,7 +5,7 @@ import EditableEmailItems from "./EditableEmailItem";
 import ConfirmDialog from "../ConfirmDialog";
 import { FormItem } from "../../../interface/index";
 import CurrentField from "./CurrencyField";
-import { Button, TableCell,TableRow } from "./Home.style";
+import { TableCell,TableRow } from "./Home.style";
 interface RowProps {
   row: FormItem;
   index: number;

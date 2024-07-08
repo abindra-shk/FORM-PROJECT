@@ -1,17 +1,29 @@
-import { useState } from 'preact/hooks'
-
-
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./app/store";
+import Navbar from "./layout/Navbar";
+import Footer from "./layout/Footer";
+import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
-import Navbar from './layout/Navbar';
-import Footer from './layout/Footer';
-export function App() {
+import Register from "./pages/Register/Register";
 
-
+const App: React.FC = () => {
   return (
-    <>
-    <Navbar/>
-<Home/>
-<Footer/>
-    </>
-  )
-}
+
+    <Provider store={store}>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/register" element={<Register/>} />
+        </Routes>
+        <Footer />
+      </Router>
+    </Provider>
+
+  
+  );
+};
+
+export default App;
