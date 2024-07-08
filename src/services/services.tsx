@@ -1,9 +1,11 @@
 import baseAxios from './axios';
 
-
-export const GetRequest = async (url: string, config = {}) => {
- 
-  return await baseAxios.get(url, config);
+export const GetRequest = async (url: string) => {
+  return await baseAxios.get(url, {
+    headers: {
+      accessToken: localStorage.getItem('accessToken'),
+    },
+  });
 };
 
 export const PostRequest = (url: string, data: any, config = {}) => {

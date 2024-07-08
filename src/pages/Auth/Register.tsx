@@ -84,7 +84,7 @@ const RegisterForm = () => {
           value={formValues.repeat_password}
           onChange={handleChange}
         />
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        <Button type="submit" variant="contained" color="primary" sx={{width:'100px'}}>
           Register
         </Button>
         <Typography variant="body2" component="p" sx={{ mt: 2 }}>

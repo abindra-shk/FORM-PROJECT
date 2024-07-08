@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from "react";
-import ErrorIcon from "@mui/icons-material/Error";
-import "./Form.style";
-import FormRow from "./FormRow";
-import { FormItem } from "../../../interface/interface";
-import { Button, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import FormHeading from "./FormHeading";
+import { useEffect, useState } from 'react';
+import ErrorIcon from '@mui/icons-material/Error';
+import './Form.style';
+import FormRow from './FormRow';
+import { FormItem } from '../../../interface/interface';
+import { Button, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import FormHeading from './FormHeading';
 import {
   GetRequest,
   PostRequest,
   DeleteRequest,
   PatchRequest,
-} from "../../../services/services";
-import { API_ENDPOINTS } from "../../../utils/constant";
-import dayjs, { Dayjs } from "dayjs";
-import { ErrorMessage, StyledForm } from "./Form.style";
-import ConfirmDialog from "./ConfirmDialog";
-import AutoCompleteSearch from "./AutoCompleteSearch";
+} from '../../../services/services';
+import { API_ENDPOINTS } from '../../../utils/constant';
+import dayjs, { Dayjs } from 'dayjs';
+import { ErrorMessage, StyledForm } from './Form.style';
+import ConfirmDialog from './ConfirmDialog';
+import AutoCompleteSearch from './AutoCompleteSearch';
 import {
   setNetworkInfo,
   clearNetworkInfo,
-} from "../../../services/networkSlice";
-import { useDispatch } from "react-redux";
+} from '../../../services/networkSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Form = () => {
   const dispatch = useDispatch();
@@ -32,14 +33,20 @@ const Form = () => {
   const [error, setError] = useState<string | null>(null);
   const [errorId, setErrorId] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
   const displayAllUsers = async (): Promise<void> => {
     try {
-      dispatch(setNetworkInfo("fetching"));
+      dispatch(setNetworkInfo('fetching'));
       const res = await GetRequest(API_ENDPOINTS.TEST);
+      // res status
+      if (res.status == 402) {
+        navigate ('./login')
+      }
       dispatch(clearNetworkInfo());
       setFormArray(res.data.data);
       setFilteredFormArray(res.data.data);
-      console.log("users", res);
+      console.log('users', res);
     } catch (err) {
       console.log(err);
     }
@@ -55,19 +62,19 @@ const Form = () => {
       const obj = { ...item };
 
       switch (name) {
-        case "name":
+        case 'name':
           obj.name = value;
           updateData(id, { name: value });
           break;
-        case "email":
+        case 'email':
           obj.email = value;
           updateData(id, { email: value });
           break;
-        case "address":
+        case 'address':
           obj.address = value;
           updateData(id, { address: value });
           break;
-        case "ratePerHour":
+        case 'ratePerHour':
           obj.ratePerHour = value;
           if (obj.ratePerHour.toString().trim().length !== 0) {
             obj.total = obj.hours * value;
@@ -77,7 +84,7 @@ const Form = () => {
           updateData(id, { ratePerHour: value });
           updateData(id, { total: obj.total });
           break;
-        case "hours":
+        case 'hours':
           obj.hours = value;
           if (obj.hours.toString().trim().length !== 0) {
             obj.total = obj.ratePerHour * value;
@@ -87,21 +94,21 @@ const Form = () => {
           updateData(id, { hours: value });
           updateData(id, { total: obj.total });
           break;
-        case "startDate":
-        case "endDate":
+        case 'startDate':
+        case 'endDate':
           obj[name] = value;
           if (
-            name === "startDate" &&
+            name === 'startDate' &&
             obj.endDate &&
             dayjs(value).isAfter(dayjs(obj.endDate))
           ) {
-            setError("Start date cannot be after end date");
+            setError('Start date cannot be after end date');
           } else if (
-            name === "endDate" &&
+            name === 'endDate' &&
             obj.startDate &&
             dayjs(value).isBefore(dayjs(obj.startDate))
           ) {
-            setError("End date cannot be before start date");
+            setError('End date cannot be before start date');
           } else {
             obj.days = calculateDays(obj.startDate, obj.endDate);
             setError(null);
@@ -109,7 +116,7 @@ const Form = () => {
             updateData(id, { days: obj.days });
           }
           break;
-        case "dateRange":
+        case 'dateRange':
           obj.startDate = value.startDate;
           obj.endDate = value.endDate;
           obj.days = value.days;
@@ -127,7 +134,9 @@ const Form = () => {
     };
 
     setFormArray((prevFormArray) => prevFormArray.map(updateItem));
-    setFilteredFormArray((prevFilteredArray) => prevFilteredArray.map(updateItem));
+    setFilteredFormArray((prevFilteredArray) =>
+      prevFilteredArray.map(updateItem)
+    );
   };
 
   const updateData = async (id: string, value: any) => {
@@ -145,7 +154,7 @@ const Form = () => {
 
   const calculateDays = (startDate: Dayjs | null, endDate: Dayjs | null) => {
     if (startDate && endDate) {
-      return dayjs(endDate).diff(dayjs(startDate), "day");
+      return dayjs(endDate).diff(dayjs(startDate), 'day');
     }
     return 0;
   };
@@ -153,8 +162,12 @@ const Form = () => {
   const handleDelete = async (id: string) => {
     try {
       await DeleteRequest(`${API_ENDPOINTS.TEST}/${id}`);
-      setFormArray((prevFormArray) => prevFormArray.filter((item) => item._id !== id));
-      setFilteredFormArray((prevFilteredArray) => prevFilteredArray.filter((item) => item._id !== id));
+      setFormArray((prevFormArray) =>
+        prevFormArray.filter((item) => item._id !== id)
+      );
+      setFilteredFormArray((prevFilteredArray) =>
+        prevFilteredArray.filter((item) => item._id !== id)
+      );
     } catch (err) {
       console.log(err);
     }

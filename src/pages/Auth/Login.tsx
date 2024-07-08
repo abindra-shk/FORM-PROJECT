@@ -1,48 +1,59 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, Typography, Container, Link } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Box,
+  Typography,
+  Container,
+  Link,
+} from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { PostRequest } from '../../services/services';
 import { API_ENDPOINTS } from '../../utils/constant';
-import { useDispatch } from 'react-redux';
 import { setAuthInfo } from './authSlice';
 
-const LoginForm = () => {
-  const [formValues, setFormValues] = useState({
-    email: '',
-    password: '',
-  });
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email().required().label('Email'),
+  password: Yup.string().required().label('Password'),
+});
 
-  const [errorMessage, setErrorMessage] = useState('');
+const LoginForm = () => {
+  const [generalError, setGeneralError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await PostRequest(`${API_ENDPOINTS.ACCOUNT}/login`, formValues);
-      const { accessToken, data } = response.data;
-      localStorage.setItem('accessToken',accessToken);
-      console.log('Login successful', response.data);
-      dispatch(setAuthInfo({ accessToken, userInfo: data }));
-      navigate('/form'); // Navigate to the form component on submit
-    } catch (error) {
-      console.error('Login failed', error);
-      setErrorMessage('Invalid email or password');
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: LoginSchema,
+    validateOnChange: true,
+    validateOnBlur: true,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const response = await PostRequest(
+          `${API_ENDPOINTS.ACCOUNT}/login`,
+          values
+        );
+        const { accessToken, data } = response.data;
+        localStorage.setItem('accessToken', accessToken);
+        dispatch(setAuthInfo({ accessToken, userInfo: data }));
+        navigate('/form');
+      } catch (error) {
+        setGeneralError('Invalid email or password');
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   return (
     <Container maxWidth="xs">
       <Box
-        component="form"
-        onSubmit={handleSubmit}
         sx={{
           display: 'flex',
           color: 'white',
@@ -55,35 +66,55 @@ const LoginForm = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Login
         </Typography>
-        <TextField
-          fullWidth
-          label="Email"
-          name="email"
-          variant="outlined"
-          type="email"
-          value={formValues.email}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
-          label="Password"
-          name="password"
-          variant="outlined"
-          type="password"
-          value={formValues.password}
-          onChange={handleChange}
-        />
-        {errorMessage && (
-          <Typography variant="body2" color="error" sx={{ mt: 2 }}>
-            {errorMessage}
-          </Typography>
-        )}
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Login
-        </Button>
+        <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
+          <TextField
+            fullWidth
+            label="Email"
+            variant="outlined"
+            type="email"
+            name="email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            margin="normal"
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            variant="outlined"
+            type="password"
+            name="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            margin="normal"
+          />
+          {generalError && (
+            <Typography variant="body2" color="error" sx={{ mt: 2 }}>
+              {generalError}
+            </Typography>
+          )}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={formik.isSubmitting}
+            sx={{ mt: 2 }}
+          >
+            {formik.isSubmitting ? 'Logging in...' : 'Login'}
+          </Button>
+        </form>
         <Typography variant="body2" component="p" sx={{ mt: 2 }}>
           Don't have an account?{' '}
-          <Link onClick={() => navigate('/register')} sx={{ cursor: 'pointer' }}>
+          <Link
+            onClick={() => navigate('/register')}
+            sx={{ cursor: 'pointer' }}
+          >
             Create an account
           </Link>
         </Typography>
