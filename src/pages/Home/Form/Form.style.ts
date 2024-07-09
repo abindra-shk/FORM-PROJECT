@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
-import { TextField, Typography } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers';
+import styled, { css } from "styled-components";
+import { TextField, Typography } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 
 interface RowItemProps {
   heading?: boolean;
@@ -11,7 +11,7 @@ export const StyledForm = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Row = styled.div`
@@ -80,7 +80,7 @@ export const ErrorMessage = styled.div<{ visible: boolean }>`
 `;
 
 export const ErrorRowItem = styled(Typography)<{ hasError: boolean }>`
-  border: ${(props) => (props.hasError ? '2px solid red' : 'none')};
+  border: ${(props) => (props.hasError ? "2px solid red" : "none")};
   border-radius: 4px;
   height: 20px;
   cursor: pointer;

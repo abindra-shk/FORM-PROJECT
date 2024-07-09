@@ -11,14 +11,21 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import { clearAuthInfo } from '../../Auth/authSlice';
+import AutoCompleteSearch from './AutoCompleteSearch'; // Import AutoCompleteSearch
+import { FormItem } from '../../../interface/interface';
 
-const Navbar = () => {
+
+interface NavBarProps {
+  formArray: FormItem[];
+  onInputChange: (value: string) => void;
+  onAddRecord: (value: string) => void;
+}
+
+const Navbar: React.FC<NavBarProps> = ({ formArray, onInputChange, onAddRecord }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state: any) => state.auth.userInfo);
-  const isAuthenticated = useSelector(
-    (state: any) => state.auth.isAuthenticated
-  );
+  const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -55,9 +62,13 @@ const Navbar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {isAuthenticated && userInfo
-              ? `Welcome, ${userInfo.userName}`
-              : 'News'}
+            {isAuthenticated && (
+              <AutoCompleteSearch
+                formArray={formArray}
+                onInputChange={onInputChange}
+                onAddRecord={onAddRecord}
+              />
+            )}
           </Typography>
           {isAuthenticated && (
             <div>

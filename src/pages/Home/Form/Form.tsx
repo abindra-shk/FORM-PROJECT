@@ -23,6 +23,7 @@ import {
 } from '../../../services/networkSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const Form = () => {
   const dispatch = useDispatch();
@@ -224,11 +225,17 @@ const Form = () => {
 
   return (
     <>
-      <AutoCompleteSearch
+      
+      <Navbar
         formArray={formArray}
         onInputChange={handleSearchInputChange}
         onAddRecord={handleAddRecord}
       />
+      {/* <AutoCompleteSearch
+        formArray={formArray}
+        onInputChange={handleSearchInputChange}
+        onAddRecord={handleAddRecord}
+      /> */}
       <StyledForm>
         <ErrorMessage visible={!!error}>
           <Typography variant="h6" color="error">

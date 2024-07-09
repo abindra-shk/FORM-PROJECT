@@ -1,10 +1,10 @@
-import Navbar from './Form/Navbar';
+// import Navbar from './Form/Navbar';
 import Form from './Form/Form';
 
 const Home = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <Form />
     </>
   );
