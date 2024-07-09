@@ -11,11 +11,12 @@ const ForgetPasswordSchema = Yup.object().shape({
 const ForgetPassword = () => {
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
-      // Implement your password reset logic here (API call, etc.)
+      await PostRequest(`account/password-reset`, values);
+      alert("Email Sent.Check Email.");
       console.log("Password reset email sent to:", values.email);
     } catch (error) {
       console.error("Password reset error:", error);
-      setFieldError("email", "Failed to reset password"); 
+      setFieldError("email", "Failed to reset password");
     } finally {
       setSubmitting(false);
     }

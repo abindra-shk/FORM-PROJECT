@@ -41,7 +41,6 @@ const ResetPassword = () => {
 
   return (
     <Container maxWidth="xs">
-      {token}
       <Box
         sx={{
           display: "flex",

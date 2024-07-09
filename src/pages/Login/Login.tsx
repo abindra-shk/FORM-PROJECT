@@ -94,6 +94,10 @@ const Login = () => {
 <div>
   <Link to="/register"><Button variant="contained" sx={{my:1}}>Register</Button></Link>
 </div>
+<div>
+<Link to="/forget-password"><Button variant="contained" sx={{my:1}}>ForgetPassword</Button></Link>
+
+</div>
           </Form>
         )}
       </Formik>
