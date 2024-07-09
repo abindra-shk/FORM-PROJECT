@@ -3,7 +3,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import './Form.style';
 import FormRow from './FormRow';
 import { FormItem } from '../../../interface/interface';
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import FormHeading from './FormHeading';
 import {
@@ -14,7 +14,7 @@ import {
 } from '../../../services/services';
 import { API_ENDPOINTS } from '../../../utils/constant';
 import dayjs, { Dayjs } from 'dayjs';
-import { ErrorMessage, StyledForm } from './Form.style';
+import { AddButton, ErrorMessage, StyledForm } from './Form.style';
 import ConfirmDialog from './ConfirmDialog';
 import {
   setNetworkInfo,
@@ -41,7 +41,7 @@ const Form = () => {
       const res = await GetRequest(API_ENDPOINTS.TEST);
       // res status
       if (res.status == 402) {
-        navigate ('./login')
+        navigate('./login');
       }
       dispatch(clearNetworkInfo());
       setFormArray(res.data.data);
@@ -224,7 +224,6 @@ const Form = () => {
 
   return (
     <>
-      
       <Navbar
         formArray={formArray}
         onInputChange={handleSearchInputChange}
@@ -257,9 +256,9 @@ const Form = () => {
             showError={showError}
           />
         ))}
-        <Button variant="contained" color="secondary" onClick={handleAdd}>
+        <AddButton variant="contained" color="secondary" onClick={handleAdd}>
           <AddIcon />
-        </Button>
+        </AddButton>
         <ConfirmDialog
           open={dialogOpen}
           onClose={handleCloseDialog}

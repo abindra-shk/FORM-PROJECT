@@ -57,25 +57,7 @@ const theme = createTheme({
         },
       },
     },
-    MuiButton: {
-      styleOverrides: {
-        root: { width: '40px' },
-        containedSecondary: {
-          borderRadius: '50%',
-          minWidth: '40px',
-          height: '40px',
-          padding: '10px',
-          marginTop: '5px',
-          backgroundColor: grey[500],
-          '&.MuiButton-containedSecondary': {
-            color: 'white',
-            '&:hover': {
-              backgroundColor: grey[700],
-            },
-          },
-        },
-      },
-    },
+   
     MuiInputLabel: {
       styleOverrides: {
         root: {

@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
-import { TextField, Typography } from "@mui/material";
+import { TextField, Typography, Button} from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { grey } from "@mui/material/colors";
 
 interface RowItemProps {
   heading?: boolean;
@@ -84,4 +85,17 @@ export const ErrorRowItem = styled(Typography)<{ hasError: boolean }>`
   border-radius: 4px;
   height: 20px;
   cursor: pointer;
+`;
+
+export const AddButton = styled(Button)`
+  border-radius: 50%;
+  min-width: 40px;
+  height: 40px;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: ${grey[500]};
+  color: white;
+  &:hover {
+    background-color: ${grey[700]};
+  }
 `;
