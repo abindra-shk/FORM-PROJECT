@@ -6,6 +6,7 @@ import Footer from "./layout/Footer";
 import Login from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
+import ResetPassword from "./pages/Login/ResetPassword";
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,8 @@ const App: React.FC = () => {
           <Route path="/" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/register" element={<Register/>} />
+          
+          {/* <Route path="/account/password-reset/confirm/:token" element={<ResetPassword />}/> */}
         </Routes>
         <Footer />
       </Router>
