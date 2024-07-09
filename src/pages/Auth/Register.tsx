@@ -13,7 +13,8 @@ import * as Yup from 'yup';
 import { PostRequest } from '../../services/services';
 import { API_ENDPOINTS } from '../../utils/constant';
 
-const pswdPtrn = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$/;
+const pswdPtrn =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$/;
 
 const RegisterSchema = Yup.object().shape({
   userName: Yup.string()
@@ -58,10 +59,7 @@ const RegisterForm = () => {
     validateOnBlur: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const response = await PostRequest(
-          `${API_ENDPOINTS.ACCOUNT}/register`,
-          values
-        );
+        const response = await PostRequest(API_ENDPOINTS.REGISTER, values);
         console.log('Registration successful', response.data);
         navigate('/login'); // Navigate to the login page after successful registration
       } catch (error) {
@@ -135,8 +133,13 @@ const RegisterForm = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.repeat_password}
-            error={formik.touched.repeat_password && Boolean(formik.errors.repeat_password)}
-            helperText={formik.touched.repeat_password && formik.errors.repeat_password}
+            error={
+              formik.touched.repeat_password &&
+              Boolean(formik.errors.repeat_password)
+            }
+            helperText={
+              formik.touched.repeat_password && formik.errors.repeat_password
+            }
             margin="normal"
           />
           {generalError && (

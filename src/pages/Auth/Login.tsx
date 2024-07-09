@@ -35,13 +35,10 @@ const LoginForm = () => {
     validateOnBlur: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const response = await PostRequest(
-          `${API_ENDPOINTS.ACCOUNT}/login`,
-          values
-        );
-        const { accessToken, data } = response.data;
+        const response = await PostRequest(API_ENDPOINTS.LOGIN, values);
+        const { accessToken, refreshToken, data } = response.data;
         localStorage.setItem('accessToken', accessToken);
-        dispatch(setAuthInfo({ accessToken, userInfo: data }));
+        dispatch(setAuthInfo({ accessToken, refreshToken, userInfo: data }));
         navigate('/form');
       } catch (error) {
         setGeneralError('Invalid email or password');
@@ -66,7 +63,10 @@ const LoginForm = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           Login
         </Typography>
-        <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
+        <form
+          onSubmit={formik.handleSubmit}
+          style={{ width: '100%', display: 'flex', flexDirection:'column',alignItems:'center' }}
+        >
           <TextField
             fullWidth
             label="Email"
@@ -106,20 +106,28 @@ const LoginForm = () => {
             type="submit"
             variant="contained"
             color="primary"
-            fullWidth
             disabled={formik.isSubmitting}
-            sx={{ mt: 2 }}
+            sx={{ mt: 2, width: '100px' }}
           >
             {formik.isSubmitting ? 'Logging in...' : 'Login'}
           </Button>
         </form>
+        <Typography variant="body2" component="p" sx={{ mt: 2 }}>
+          Forgot {' '}
+          <Link
+            onClick={() => navigate('/forget-password')}
+            sx={{ cursor: 'pointer' }}
+          >
+            Password?
+          </Link>
+        </Typography>
         <Typography variant="body2" component="p" sx={{ mt: 2 }}>
           Don't have an account?{' '}
           <Link
             onClick={() => navigate('/register')}
             sx={{ cursor: 'pointer' }}
           >
-            Create an account
+            Sign up
           </Link>
         </Typography>
       </Box>

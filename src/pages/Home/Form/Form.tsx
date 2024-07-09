@@ -16,7 +16,6 @@ import { API_ENDPOINTS } from '../../../utils/constant';
 import dayjs, { Dayjs } from 'dayjs';
 import { ErrorMessage, StyledForm } from './Form.style';
 import ConfirmDialog from './ConfirmDialog';
-import AutoCompleteSearch from './AutoCompleteSearch';
 import {
   setNetworkInfo,
   clearNetworkInfo,

@@ -13,7 +13,8 @@ import Button from '@mui/material/Button';
 import { clearAuthInfo } from '../../Auth/authSlice';
 import AutoCompleteSearch from './AutoCompleteSearch'; // Import AutoCompleteSearch
 import { FormItem } from '../../../interface/interface';
-
+import { API_ENDPOINTS } from '../../../utils/constant';
+import { PostRequest } from '../../../services/services';
 
 interface NavBarProps {
   formArray: FormItem[];
@@ -21,11 +22,18 @@ interface NavBarProps {
   onAddRecord: (value: string) => void;
 }
 
-const Navbar: React.FC<NavBarProps> = ({ formArray, onInputChange, onAddRecord }) => {
+const Navbar: React.FC<NavBarProps> = ({
+  formArray,
+  onInputChange,
+  onAddRecord,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state: any) => state.auth.userInfo);
-  const isAuthenticated = useSelector((state: any) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated
+  );
+  const refreshToken = useSelector((state: any) => state.auth.refreshToken);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -37,10 +45,23 @@ const Navbar: React.FC<NavBarProps> = ({ formArray, onInputChange, onAddRecord }
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    dispatch(clearAuthInfo());
-    navigate('/login');
-    handleClose();
+  const logOut = async () => {
+    console.log('refreshToken',refreshToken)
+    await PostRequest(API_ENDPOINTS.LOGOUT, {
+      refreshToken: refreshToken,
+    });
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      dispatch(clearAuthInfo());
+      navigate('/login');
+      handleClose();
+    } catch (err) {
+      console.log(err);
+      alert('Cannot logout');
+    }
   };
 
   const handleProfile = () => {

@@ -1,5 +1,9 @@
 export const API_ENDPOINTS = {
     TEST: '/test',
-    ACCOUNT: '/account',
+    LOGIN: '/account/login',
+    REGISTER: '/account/register',
+    LOGOUT: '/account/logout',
+    FORGET_PASSWORD:'account/password-reset',
+    RESET_PASSWORD:'account/password-reset-confirm'
   };
   
