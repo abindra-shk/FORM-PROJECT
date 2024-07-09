@@ -7,14 +7,14 @@ import {
   Typography,
   Container,
   Link,
+  Paper,
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { PostRequest } from '../../services/services';
 import { API_ENDPOINTS } from '../../utils/constant';
 
-const pswdPtrn =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$/;
+const pswdPtrn = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$/;
 
 const RegisterSchema = Yup.object().shape({
   userName: Yup.string()
@@ -61,7 +61,7 @@ const RegisterForm = () => {
       try {
         const response = await PostRequest(API_ENDPOINTS.REGISTER, values);
         console.log('Registration successful', response.data);
-        navigate('/login'); // Navigate to the login page after successful registration
+        navigate('/login');
       } catch (error) {
         console.error('Registration failed', error);
         setGeneralError('Registration failed, please try again.');
@@ -72,99 +72,116 @@ const RegisterForm = () => {
   });
 
   return (
-    <Container maxWidth="xs">
-      <Box
+    <Container
+      maxWidth="xs"
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}
+    >
+      <Paper
+        elevation={3}
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          mt: 8,
-          gap: 2,
+          padding: 4,
+          borderRadius: '10px',
+          width: '100%',
+          color: 'white',
+          backgroundColor: '#1c1f26',
         }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Register
-        </Typography>
-        <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
-          <TextField
-            fullWidth
-            label="Username"
-            variant="outlined"
-            name="userName"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.userName}
-            error={formik.touched.userName && Boolean(formik.errors.userName)}
-            helperText={formik.touched.userName && formik.errors.userName}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Email"
-            variant="outlined"
-            type="email"
-            name="email"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            variant="outlined"
-            type="password"
-            name="password"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.password}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Repeat Password"
-            variant="outlined"
-            type="password"
-            name="repeat_password"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.repeat_password}
-            error={
-              formik.touched.repeat_password &&
-              Boolean(formik.errors.repeat_password)
-            }
-            helperText={
-              formik.touched.repeat_password && formik.errors.repeat_password
-            }
-            margin="normal"
-          />
-          {generalError && (
-            <Typography variant="body2" color="error" sx={{ mt: 2 }}>
-              {generalError}
-            </Typography>
-          )}
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            disabled={formik.isSubmitting}
-            sx={{ mt: 2 }}
-          >
-            {formik.isSubmitting ? 'Registering...' : 'Register'}
-          </Button>
-        </form>
-        <Typography variant="body2" component="p" sx={{ mt: 2 }}>
-          Already have an account?{' '}
-          <Link onClick={() => navigate('/login')} sx={{ cursor: 'pointer' }}>
-            Login
-          </Link>
-        </Typography>
-      </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h4" component="h1" gutterBottom>
+            Register
+          </Typography>
+          <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
+            <TextField
+              fullWidth
+              label="Username"
+              variant="outlined"
+              name="userName"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.userName}
+              error={formik.touched.userName && Boolean(formik.errors.userName)}
+              helperText={formik.touched.userName && formik.errors.userName}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              type="email"
+              name="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              variant="outlined"
+              type="password"
+              name="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Repeat Password"
+              variant="outlined"
+              type="password"
+              name="repeat_password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.repeat_password}
+              error={
+                formik.touched.repeat_password &&
+                Boolean(formik.errors.repeat_password)
+              }
+              helperText={
+                formik.touched.repeat_password && formik.errors.repeat_password
+              }
+              margin="normal"
+            />
+            {generalError && (
+              <Typography variant="body2" color="error" sx={{ mt: 2 }}>
+                {generalError}
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              disabled={formik.isSubmitting}
+              sx={{ mt: 2 }}
+            >
+              {formik.isSubmitting ? 'Registering...' : 'Register'}
+            </Button>
+          </form>
+          <Typography variant="body2" component="p" sx={{ mt: 2 }}>
+            Already have an account?{' '}
+            <Link onClick={() => navigate('/login')} sx={{ cursor: 'pointer' }}>
+              Login
+            </Link>
+          </Typography>
+        </Box>
+      </Paper>
     </Container>
   );
 };

@@ -71,7 +71,7 @@ const Navbar: React.FC<NavBarProps> = ({
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: 'grey' }}>
+      <AppBar position="static" sx={{ backgroundColor: '#0e1217',height:'64px', borderBottom: '1px solid rgba(168, 179, 207, 0.2)'   }}>
         <Toolbar>
           <IconButton
             size="large"

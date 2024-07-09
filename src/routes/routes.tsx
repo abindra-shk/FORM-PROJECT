@@ -17,7 +17,11 @@ const MainRoute: React.FC = () => {
       <Route path="/register" element={<RegisterForm />} />
       <Route path="/forget-password" element={<ForgetPassword />} />
       <Route
-        path="/account/password-reset/confirm/:token"
+        path="/account/password-reset-confirm/:token"
+        element={<ResetPassword />}
+      />
+        <Route
+        path="/account/password-reset"
         element={<ResetPassword />}
       />
       /* Protected routes */
