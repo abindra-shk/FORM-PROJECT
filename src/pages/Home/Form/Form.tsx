@@ -140,6 +140,7 @@ const Form = () => {
   };
 
   const updateData = async (id: string, value: any) => {
+    console.log('updated value', value)
     if (value && Object.keys(value).length > 0) {
       try {
         await PatchRequest(`${API_ENDPOINTS.TEST}/${id}`, value);

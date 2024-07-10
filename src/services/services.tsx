@@ -16,10 +16,18 @@ export const PostRequest = (url: string, data: any) => {
   });
 };
 
-export const PatchRequest = (url: string, data: any, config = {}) => {
-  return baseAxios.patch(url, data, config);
+export const PatchRequest = (url: string, data: any) => {
+  return baseAxios.patch(url, data, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+  });
 };
 
-export const DeleteRequest = (url: string, config = {}) => {
-  return baseAxios.delete(url, config);
+export const DeleteRequest = (url: string) => {
+  return baseAxios.delete(url,{
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+  });
 };

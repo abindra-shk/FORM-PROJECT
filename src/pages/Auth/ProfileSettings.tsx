@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
@@ -34,10 +35,10 @@ const ProfileSettings = () => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const userInfo = useSelector((state: any) => state.auth.userInfo);
 
-  const handlePasswordChange = () => {
-    setIsChangingPassword(true);
-    setValue(1); // Switch to password change tab when "Change Password" is clicked
-  };
+  // const handlePasswordChange = () => {
+  //   setIsChangingPassword(true);
+  //   setValue(1); // Switch to password change tab when "Change Password" is clicked
+  // };
 
   const formik = useFormik({
     initialValues: {
@@ -50,7 +51,10 @@ const ProfileSettings = () => {
     validateOnBlur: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const response = await PostRequest(API_ENDPOINTS.CHANGE_PASSWORD, values);
+        const response = await PostRequest(
+          API_ENDPOINTS.CHANGE_PASSWORD,
+          values
+        );
         console.log('Password change successful', response.data);
         setIsChangingPassword(false); // Hide the form after successful password change
       } catch (error) {
@@ -92,9 +96,13 @@ const ProfileSettings = () => {
             Profile Settings
           </Typography>
           <Box sx={{ width: '100%' }}>
-            <Tabs value={value} onChange={(e:any, newValue) => setValue(newValue)} aria-label="profile tabs">
-              <Tab sx={{color:'white'}} label="General Information" />
-              <Tab sx={{color:'white'}}  label="Change Password" />
+            <Tabs
+              value={value}
+              onChange={(e: any, newValue) => setValue(newValue)}
+              aria-label="profile tabs"
+            >
+              <Tab sx={{ color: 'white' }} label="General Information" />
+              <Tab sx={{ color: 'white' }} label="Change Password" />
             </Tabs>
             <Box sx={{ p: 3 }}>
               <TabPanel value={value} index={0}>
@@ -103,7 +111,6 @@ const ProfileSettings = () => {
                   label="Username"
                   variant="outlined"
                   defaultValue={userInfo?.userName}
-                  disabled
                   sx={{ mt: 2 }}
                 />
                 <TextField
@@ -111,7 +118,6 @@ const ProfileSettings = () => {
                   label="Email"
                   variant="outlined"
                   defaultValue={userInfo?.email}
-                  disabled
                   sx={{ mt: 4 }}
                 />
                 <Button
@@ -119,7 +125,7 @@ const ProfileSettings = () => {
                   color="primary"
                   onClick={() => alert('Implement edit functionality')}
                   sx={{ mt: 4 }}
-                  size='large'
+                  size="large"
                   fullWidth
                 >
                   Edit
@@ -127,7 +133,10 @@ const ProfileSettings = () => {
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <Box sx={{ mt: 2 }}>
-                  <form onSubmit={formik.handleSubmit} style={{ width: '100%' }}>
+                  <form
+                    onSubmit={formik.handleSubmit}
+                    style={{ width: '100%' }}
+                  >
                     <TextField
                       fullWidth
                       label="Current Password"
@@ -137,8 +146,14 @@ const ProfileSettings = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.currentPassword}
-                      error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
-                      helperText={formik.touched.currentPassword && formik.errors.currentPassword}
+                      error={
+                        formik.touched.currentPassword &&
+                        Boolean(formik.errors.currentPassword)
+                      }
+                      helperText={
+                        formik.touched.currentPassword &&
+                        formik.errors.currentPassword
+                      }
                       margin="normal"
                     />
                     <TextField
@@ -150,8 +165,14 @@ const ProfileSettings = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.newPassword1}
-                      error={formik.touched.newPassword1 && Boolean(formik.errors.newPassword1)}
-                      helperText={formik.touched.newPassword1 && formik.errors.newPassword1}
+                      error={
+                        formik.touched.newPassword1 &&
+                        Boolean(formik.errors.newPassword1)
+                      }
+                      helperText={
+                        formik.touched.newPassword1 &&
+                        formik.errors.newPassword1
+                      }
                       margin="normal"
                     />
                     <TextField
@@ -163,8 +184,14 @@ const ProfileSettings = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.newPassword2}
-                      error={formik.touched.newPassword2 && Boolean(formik.errors.newPassword2)}
-                      helperText={formik.touched.newPassword2 && formik.errors.newPassword2}
+                      error={
+                        formik.touched.newPassword2 &&
+                        Boolean(formik.errors.newPassword2)
+                      }
+                      helperText={
+                        formik.touched.newPassword2 &&
+                        formik.errors.newPassword2
+                      }
                       margin="normal"
                     />
                     <Button
@@ -172,11 +199,13 @@ const ProfileSettings = () => {
                       variant="contained"
                       color="primary"
                       fullWidth
-                      size='large'
+                      size="large"
                       disabled={formik.isSubmitting}
                       sx={{ mt: 4 }}
                     >
-                      {formik.isSubmitting ? 'Changing password...' : 'Change Password'}
+                      {formik.isSubmitting
+                        ? 'Changing password...'
+                        : 'Change Password'}
                     </Button>
                   </form>
                 </Box>
@@ -189,7 +218,7 @@ const ProfileSettings = () => {
   );
 };
 
-const TabPanel = (props:any) => {
+const TabPanel = (props: any) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -200,11 +229,7 @@ const TabPanel = (props:any) => {
       aria-labelledby={`profile-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 };
